@@ -1,1 +1,1 @@
-create database if not exists db_allocation character set UTF8mb4 collate utf8mb4_bin;
+CREATE DATABASE IF NOT EXISTS db_allocation CHARACTER SET UTF8mb4 COLLATE utf8mb4_bin;
