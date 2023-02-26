@@ -1,0 +1,1 @@
+create database if not exists db_allocation character set UTF8mb4 collate utf8mb4_bin;
