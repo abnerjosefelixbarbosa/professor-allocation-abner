@@ -1,4 +1,4 @@
-package com.projeto.professor.allocation.entity;
+package com.projeto.professorallocationabner.entity;
 
 import java.util.List;
 

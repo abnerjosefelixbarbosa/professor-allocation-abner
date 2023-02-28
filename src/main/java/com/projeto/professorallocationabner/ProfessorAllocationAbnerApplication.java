@@ -1,13 +1,13 @@
-package com.projeto.professor.allocation;
+package com.projeto.professorallocationabner;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ProfessorAllocationApplication {
+public class ProfessorAllocationAbnerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ProfessorAllocationApplication.class, args);
+		SpringApplication.run(ProfessorAllocationAbnerApplication.class, args);
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.projeto.professor.allocation.entity;
+package com.projeto.professorallocationabner.entity;
 
 import java.time.DayOfWeek;
 import java.util.Date;

@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.projeto</groupId>
-	<artifactId>abner-allocation</artifactId>
+	<artifactId>professor-allocation-abner</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>abner-allocation</name>
-	<description>Abner Allocation Server</description>
+	<name>professor-allocation-abner</name>
+	<description>Professor Allocation Abner Server</description>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
