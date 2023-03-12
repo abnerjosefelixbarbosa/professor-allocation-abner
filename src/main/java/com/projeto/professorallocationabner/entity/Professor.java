@@ -1,5 +1,7 @@
 package com.projeto.professorallocationabner.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.OnDelete;
@@ -15,7 +18,6 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Table(name = "professor")
 public class Professor {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -27,20 +29,25 @@ public class Professor {
 	private Long departmentId;
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne(optional = false)
-    @JoinColumn(name = "department_id", nullable = false, insertable = false, updatable = false)
-    private Department department;
+	@JoinColumn(name = "department_id", nullable = false, insertable = false, updatable = false)
+	private Department department;
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@OneToMany(mappedBy = "professor")
+	private List<Allocation> allocations;
 
 	public Professor() {
 		super();
 	}
 
-	public Professor(Long id, String name, String cpf, Long departmentId, Department department) {
+	public Professor(Long id, String name, String cpf, Long departmentId, Department department,
+			List<Allocation> allocations) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.cpf = cpf;
 		this.departmentId = departmentId;
 		this.department = department;
+		this.allocations = allocations;
 	}
 
 	public Long getId() {
@@ -83,10 +90,16 @@ public class Professor {
 		this.department = department;
 	}
 
-	@Override
-	public String toString() {
-		return "Professor [id=" + id + ", name=" + name + ", cpf=" + cpf + ", departmentId=" + departmentId
-				+ ", department=" + department + "]";
+	public List<Allocation> getAllocations() {
+		return allocations;
 	}
 
+	public void setAllocations(List<Allocation> allocations) {
+		this.allocations = allocations;
+	}
+
+	@Override
+	public String toString() {
+		return "Professor [id=" + id + ", name=" + name + ", cpf=" + cpf + ", departmentId=" + departmentId + "]";
+	}
 }

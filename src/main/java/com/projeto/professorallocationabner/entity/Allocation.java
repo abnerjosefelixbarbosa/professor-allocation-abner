@@ -10,6 +10,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -17,7 +19,6 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "allocation")
 public class Allocation {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -34,12 +35,19 @@ public class Allocation {
 	private Long courseId;
 	@Column(name = "course_id", nullable = false)
 	private Long professorId;
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "professor_id", nullable = false, insertable = false, updatable = false)
+	private Professor professor;
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "course_id", nullable = false, insertable = false, updatable = false)
+	private Course course;
 
 	public Allocation() {
 		super();
 	}
 
-	public Allocation(Long id, DayOfWeek day, Date startHour, Date endHour, Long courseId, Long professorId) {
+	public Allocation(Long id, DayOfWeek day, Date startHour, Date endHour, Long courseId, Long professorId,
+			Professor professor, Course course) {
 		super();
 		this.id = id;
 		this.day = day;
@@ -47,6 +55,8 @@ public class Allocation {
 		this.endHour = endHour;
 		this.courseId = courseId;
 		this.professorId = professorId;
+		this.professor = professor;
+		this.course = course;
 	}
 
 	public Long getId() {
@@ -97,10 +107,25 @@ public class Allocation {
 		this.professorId = professorId;
 	}
 
+	public Professor getProfessor() {
+		return professor;
+	}
+
+	public void setProfessor(Professor professor) {
+		this.professor = professor;
+	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
 	@Override
 	public String toString() {
 		return "Allocation [id=" + id + ", day=" + day + ", startHour=" + startHour + ", endHour=" + endHour
 				+ ", courseId=" + courseId + ", professorId=" + professorId + "]";
 	}
-
 }
