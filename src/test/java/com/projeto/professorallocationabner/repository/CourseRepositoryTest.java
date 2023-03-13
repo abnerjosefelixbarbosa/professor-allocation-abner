@@ -12,95 +12,95 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 
-import com.projeto.professorallocationabner.entity.Department;
+import com.projeto.professorallocationabner.entity.Course;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback(false)
 @TestPropertySource(locations = "classpath:application.properties")
-public class DepartmentRepositoryTest {
+public class CourseRepositoryTest {
 	@Autowired
-	private DepartmentRepository departmentRepository;
-	
+	private CourseRepository courseRepository;
+
 	@Test
-    @Disabled
+	@Disabled
 	public void findAll() {
 		try {
-			List<Department> departments = departmentRepository.findAll();
-			departments.forEach(System.out::println);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-	}
-	
-	@Test
-    @Disabled
-	public void findById() {
-        try {
-        	Long id = 1L;
-        	
-            Department department = departmentRepository.findById(id).orElse(null);            
-            System.out.println(department.toString()); 
+			List<Course> courses = courseRepository.findAll();
+			courses.forEach(System.out::println);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}
 
 	@Test
-	//@Disabled
-	public void save_create() {
+	@Disabled
+	public void findById() {
 		try {
-			Department department = new Department();
-			department.setId(null);
-			department.setName("Department 1");	
-		
-			departmentRepository.save(department);
-			System.out.println("departamento salvo");
+			Long id = 1L;
+			Course course = courseRepository.findById(id).orElse(null);
+
+			System.out.println(course.toString());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}
-	
+
 	@Test
-    @Disabled
+	@Disabled
+	public void save_create() {
+		try {
+			Course course = new Course();
+			course.setId(null);
+			course.setName("Course 2");
+
+			courseRepository.save(course);
+			System.out.println("curso salvo");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	@Test
+	@Disabled
 	public void save_update() {
 		try {
 			Long id = 1L;
-			Department department = new Department();
-			department.setId(1L);
-			department.setName("Department 1");	
+			Course course = new Course();
+			course.setId(1L);
+			course.setName("Course 1");
 			
-			Department department1 = departmentRepository.findById(id).orElse(null);  
-			BeanUtils.copyProperties(department, department1);
-			
-			departmentRepository.save(department1);
-			System.out.println("departamento atualizado");
+			Course course1 = courseRepository.findById(id).orElse(null);
+			BeanUtils.copyProperties(course, course1);
+
+			courseRepository.save(course1);
+			System.out.println("curso atualizado");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	@Disabled
-    public void deleteById() {
+	public void deleteById() {
 		try {
 			Long id = 1L;
-	        
-			departmentRepository.deleteById(id);
-			System.out.println("departamento deletado");
+			
+			courseRepository.deleteById(id);
+			System.out.println("curso deletado");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-    }
-	
+	}
+
 	@Test
 	@Disabled
-    public void deleteAll() {
+	public void deleteAll() {
 		try {
-			departmentRepository.deleteAllInBatch();
-			System.out.println("departamentos deletados");
+			courseRepository.deleteAllInBatch();
+			System.out.println("cursos deletados");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-    }
+	}
 }

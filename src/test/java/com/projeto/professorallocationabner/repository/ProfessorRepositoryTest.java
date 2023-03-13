@@ -12,22 +12,22 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 
-import com.projeto.professorallocationabner.entity.Department;
+import com.projeto.professorallocationabner.entity.Professor;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback(false)
 @TestPropertySource(locations = "classpath:application.properties")
-public class DepartmentRepositoryTest {
+public class ProfessorRepositoryTest {
 	@Autowired
-	private DepartmentRepository departmentRepository;
+	private ProfessorRepository professorRepository;
 	
 	@Test
     @Disabled
 	public void findAll() {
 		try {
-			List<Department> departments = departmentRepository.findAll();
-			departments.forEach(System.out::println);
+			List<Professor> professors = professorRepository.findAll();
+			professors.forEach(System.out::println);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -36,26 +36,29 @@ public class DepartmentRepositoryTest {
 	@Test
     @Disabled
 	public void findById() {
+		
         try {
-        	Long id = 1L;
+        	Long id = 2L;
         	
-            Department department = departmentRepository.findById(id).orElse(null);            
-            System.out.println(department.toString()); 
+            Professor professor = professorRepository.findById(id).orElse(null);
+            System.out.println(professor.toString());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}
 
 	@Test
-	//@Disabled
+	@Disabled
 	public void save_create() {
 		try {
-			Department department = new Department();
-			department.setId(null);
-			department.setName("Department 1");	
+			Professor professor = new Professor();
+			professor.setId(null);
+			professor.setName("Professor 1");
+			professor.setCpf("111.111.111-11");
+			professor.setDepartmentId(4L);
 		
-			departmentRepository.save(department);
-			System.out.println("departamento salvo");
+			professorRepository.save(professor);
+			System.out.println("professor salvo");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -65,16 +68,18 @@ public class DepartmentRepositoryTest {
     @Disabled
 	public void save_update() {
 		try {
-			Long id = 1L;
-			Department department = new Department();
-			department.setId(1L);
-			department.setName("Department 1");	
+			Long id = 2L;
+			Professor professor = new Professor();
+			professor.setId(2L);
+			professor.setName("Professor 1");
+			professor.setCpf("111.111.111-11");
+			professor.setDepartmentId(4L);
 			
-			Department department1 = departmentRepository.findById(id).orElse(null);  
-			BeanUtils.copyProperties(department, department1);
+            Professor professor1 = professorRepository.findById(id).orElse(null);
+            BeanUtils.copyProperties(professor, professor1);
 			
-			departmentRepository.save(department1);
-			System.out.println("departamento atualizado");
+			professorRepository.save(professor1);
+			System.out.println("professor atualizado");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -86,8 +91,8 @@ public class DepartmentRepositoryTest {
 		try {
 			Long id = 1L;
 	        
-			departmentRepository.deleteById(id);
-			System.out.println("departamento deletado");
+			professorRepository.deleteById(id);
+			System.out.println("professor deletado");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -97,8 +102,8 @@ public class DepartmentRepositoryTest {
 	@Disabled
     public void deleteAll() {
 		try {
-			departmentRepository.deleteAllInBatch();
-			System.out.println("departamentos deletados");
+			professorRepository.deleteAllInBatch();
+			System.out.println("professores deletados");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
