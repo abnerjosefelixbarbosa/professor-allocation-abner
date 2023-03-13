@@ -49,18 +49,25 @@ public class AllocationRepositoryTest {
     }
 	
 	@Test
-	//@Disabled
+	@Disabled
     public void save_create() {
         try {
-        	Allocation allocation = new Allocation();
-            allocation.setId(null);
-            allocation.setDay(DayOfWeek.MONDAY);
-            allocation.setStartHour(sdf.parse("19:00-0300"));
-            allocation.setEndHour(sdf.parse("20:00-0300"));
-            allocation.setProfessorId(2L);
-            allocation.setCourseId(2L);
+        	Allocation allocation1 = new Allocation();
+            allocation1.setId(1L);
+            allocation1.setDay(DayOfWeek.MONDAY);
+            allocation1.setStartHour(sdf.parse("19:00-0300"));
+            allocation1.setEndHour(sdf.parse("20:00-0300"));
+            allocation1.setProfessorId(1L);
+            allocation1.setCourseId(1L);
+            Allocation allocation2 = new Allocation();
+            allocation2.setId(2L);
+            allocation2.setDay(DayOfWeek.MONDAY);
+            allocation2.setStartHour(sdf.parse("22:00-0300"));
+            allocation2.setEndHour(sdf.parse("24:00-0300"));
+            allocation2.setProfessorId(2L);
+            allocation2.setCourseId(2L);
 
-            allocationRepository.save(allocation);
+            allocationRepository.save(allocation1);
             System.out.println("alocação salva");
         } catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -71,17 +78,20 @@ public class AllocationRepositoryTest {
 	@Disabled
     public void save_update() {
         try {
-        	Long id = 1L;
-        	Allocation allocation = new Allocation();
-            allocation.setId(1L);
-            allocation.setDay(DayOfWeek.MONDAY);
-            allocation.setStartHour(sdf.parse("19:00-0300"));
-            allocation.setEndHour(sdf.parse("20:00-0300"));
-            allocation.setProfessorId(1L);
-            allocation.setCourseId(1L);            
-            
-            Allocation allocation1 = allocationRepository.findById(id).orElse(null);
-            BeanUtils.copyProperties(allocation, allocation1);
+        	Allocation allocation1 = new Allocation();
+            allocation1.setId(1L);
+            allocation1.setDay(DayOfWeek.MONDAY);
+            allocation1.setStartHour(sdf.parse("19:00-0300"));
+            allocation1.setEndHour(sdf.parse("20:00-0300"));
+            allocation1.setProfessorId(1L);
+            allocation1.setCourseId(1L);  
+            Allocation allocation2 = new Allocation();
+            allocation2.setId(2L);
+            allocation2.setDay(DayOfWeek.MONDAY);
+            allocation2.setStartHour(sdf.parse("22:00-0300"));
+            allocation2.setEndHour(sdf.parse("24:00-0300"));
+            allocation2.setProfessorId(2L);
+            allocation2.setCourseId(2L);   
 
             allocationRepository.save(allocation1);
             System.out.println("alocação salva");
@@ -94,9 +104,10 @@ public class AllocationRepositoryTest {
 	@Disabled
     public void deleteById() {
 		try {
-			Long id = 1L;
+			Long id1 = 1L;
+			Long id2 = 2L;
 	        
-			allocationRepository.deleteById(id);
+			allocationRepository.deleteById(id1);
 			System.out.println("alocação deletada");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

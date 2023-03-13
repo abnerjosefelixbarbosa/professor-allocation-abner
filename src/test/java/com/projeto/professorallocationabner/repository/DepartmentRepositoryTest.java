@@ -37,9 +37,10 @@ public class DepartmentRepositoryTest {
     @Disabled
 	public void findById() {
         try {
-        	Long id = 1L;
+        	Long id1 = 1L;
+        	Long id2 = 2L;
         	
-            Department department = departmentRepository.findById(id).orElse(null);            
+            Department department = departmentRepository.findById(id1).orElse(null);            
             System.out.println(department.toString()); 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -47,14 +48,17 @@ public class DepartmentRepositoryTest {
 	}
 
 	@Test
-	//@Disabled
+	@Disabled
 	public void save_create() {
 		try {
-			Department department = new Department();
-			department.setId(null);
-			department.setName("Department 1");	
+			Department department1 = new Department();
+			department1.setId(1L);
+			department1.setName("Department 1");	
+			Department department2 = new Department();
+			department2.setId(2L);
+			department2.setName("Department 2");	
 		
-			departmentRepository.save(department);
+			departmentRepository.save(department2);
 			System.out.println("departamento salvo");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -65,13 +69,12 @@ public class DepartmentRepositoryTest {
     @Disabled
 	public void save_update() {
 		try {
-			Long id = 1L;
-			Department department = new Department();
-			department.setId(1L);
-			department.setName("Department 1");	
-			
-			Department department1 = departmentRepository.findById(id).orElse(null);  
-			BeanUtils.copyProperties(department, department1);
+			Department department1 = new Department();
+			department1.setId(1L);
+			department1.setName("Department 1");	
+			Department department2 = new Department();
+			department2.setId(2L);
+			department2.setName("Department 2");	
 			
 			departmentRepository.save(department1);
 			System.out.println("departamento atualizado");
@@ -84,9 +87,10 @@ public class DepartmentRepositoryTest {
 	@Disabled
     public void deleteById() {
 		try {
-			Long id = 1L;
+			Long id1 = 1L;
+			Long id2 = 2L;
 	        
-			departmentRepository.deleteById(id);
+			departmentRepository.deleteById(id1);
 			System.out.println("departamento deletado");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -94,7 +98,7 @@ public class DepartmentRepositoryTest {
     }
 	
 	@Test
-	@Disabled
+	//@Disabled
     public void deleteAll() {
 		try {
 			departmentRepository.deleteAllInBatch();

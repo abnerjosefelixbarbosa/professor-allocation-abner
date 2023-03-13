@@ -37,8 +37,9 @@ public class CourseRepositoryTest {
 	@Disabled
 	public void findById() {
 		try {
-			Long id = 1L;
-			Course course = courseRepository.findById(id).orElse(null);
+			Long id1 = 1L;
+			Long id2 = 2L;
+			Course course = courseRepository.findById(id1).orElse(null);
 
 			System.out.println(course.toString());
 		} catch (Exception e) {
@@ -50,11 +51,14 @@ public class CourseRepositoryTest {
 	@Disabled
 	public void save_create() {
 		try {
-			Course course = new Course();
-			course.setId(null);
-			course.setName("Course 2");
+			Course course1 = new Course();
+			course1.setId(1L);
+			course1.setName("Course 1");
+			Course course2 = new Course();
+			course2.setId(2L);
+			course2.setName("Course 2");
 
-			courseRepository.save(course);
+			courseRepository.save(course1);
 			System.out.println("curso salvo");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -65,13 +69,12 @@ public class CourseRepositoryTest {
 	@Disabled
 	public void save_update() {
 		try {
-			Long id = 1L;
-			Course course = new Course();
-			course.setId(1L);
-			course.setName("Course 1");
-			
-			Course course1 = courseRepository.findById(id).orElse(null);
-			BeanUtils.copyProperties(course, course1);
+			Course course1 = new Course();
+			course1.setId(1L);
+			course1.setName("Course 1");
+			Course course2 = new Course();
+			course2.setId(2L);
+			course2.setName("Course 2");
 
 			courseRepository.save(course1);
 			System.out.println("curso atualizado");
@@ -84,9 +87,10 @@ public class CourseRepositoryTest {
 	@Disabled
 	public void deleteById() {
 		try {
-			Long id = 1L;
+			Long id1 = 1L;
+			Long id2 = 2L;
 			
-			courseRepository.deleteById(id);
+			courseRepository.deleteById(id1);
 			System.out.println("curso deletado");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

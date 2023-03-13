@@ -36,12 +36,12 @@ public class ProfessorRepositoryTest {
 	@Test
     @Disabled
 	public void findById() {
-		
         try {
-        	Long id = 2L;
+        	Long id1 = 1L;
+        	Long id2 = 2L;
         	
-            Professor professor = professorRepository.findById(id).orElse(null);
-            System.out.println(professor.toString());
+            Professor professor = professorRepository.findById(id1).orElse(null);
+            System.out.println(professor);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -51,13 +51,18 @@ public class ProfessorRepositoryTest {
 	@Disabled
 	public void save_create() {
 		try {
-			Professor professor = new Professor();
-			professor.setId(null);
-			professor.setName("Professor 1");
-			professor.setCpf("111.111.111-11");
-			professor.setDepartmentId(4L);
+			Professor professor1 = new Professor();
+			professor1.setId(1L);
+			professor1.setName("Professor 1");
+			professor1.setCpf("111.111.111-11");
+			professor1.setDepartmentId(1L);
+			Professor professor2 = new Professor();
+			professor2.setId(2L);
+			professor2.setName("Professor 2");
+			professor2.setCpf("222.222.222-22");
+			professor2.setDepartmentId(2L);
 		
-			professorRepository.save(professor);
+			professorRepository.save(professor2);
 			System.out.println("professor salvo");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -68,15 +73,16 @@ public class ProfessorRepositoryTest {
     @Disabled
 	public void save_update() {
 		try {
-			Long id = 2L;
-			Professor professor = new Professor();
-			professor.setId(2L);
-			professor.setName("Professor 1");
-			professor.setCpf("111.111.111-11");
-			professor.setDepartmentId(4L);
-			
-            Professor professor1 = professorRepository.findById(id).orElse(null);
-            BeanUtils.copyProperties(professor, professor1);
+			Professor professor1 = new Professor();
+			professor1.setId(1L);
+			professor1.setName("Professor 1");
+			professor1.setCpf("111.111.111-11");
+			professor1.setDepartmentId(1L);
+			Professor professor2 = new Professor();
+			professor2.setId(2L);
+			professor2.setName("Professor 2");
+			professor2.setCpf("222.222.222-22");
+			professor2.setDepartmentId(2L);
 			
 			professorRepository.save(professor1);
 			System.out.println("professor atualizado");
@@ -89,9 +95,10 @@ public class ProfessorRepositoryTest {
 	@Disabled
     public void deleteById() {
 		try {
-			Long id = 1L;
+			Long id1 = 1L;
+			Long id2 = 2L;
 	        
-			professorRepository.deleteById(id);
+			professorRepository.deleteById(id1);
 			System.out.println("professor deletado");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
