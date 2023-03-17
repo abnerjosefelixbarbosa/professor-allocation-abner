@@ -31,9 +31,9 @@ public class Allocation {
 	@Temporal(TemporalType.TIME)
 	@Column(name = "end", nullable = false)
 	private Date endHour;
-	@Column(name = "professor_id", nullable = false)
-	private Long courseId;
 	@Column(name = "course_id", nullable = false)
+	private Long courseId;
+	@Column(name = "professor_id", nullable = false)
 	private Long professorId;
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "professor_id", nullable = false, insertable = false, updatable = false)
