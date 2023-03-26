@@ -67,11 +67,11 @@ public class Allocation {
 		this.id = id;
 	}
 
-	public DayOfWeek getDay() {
+	public DayOfWeek getDayOfWeek() {
 		return day;
 	}
 
-	public void setDay(DayOfWeek day) {
+	public void setDayOfWeek(DayOfWeek day) {
 		this.day = day;
 	}
 
