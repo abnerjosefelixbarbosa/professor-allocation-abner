@@ -39,7 +39,7 @@ public class ProfessorServiceTest {
 		Long id1 = 1L;
 		Long id2 = 2L;
 
-		List<Professor> professors = professorService.findByDepartment(id1);
+		List<Professor> professors = professorService.findByDepartment(id2);
 		professors.forEach(System.out::println);
 	}
 
@@ -58,6 +58,7 @@ public class ProfessorServiceTest {
 		professor2.setDepartmentId(2L);
 
 		professorService.save(professor1);
+		professorService.save(professor2);
 		System.out.println("professor salvo");
 	}
 
@@ -76,6 +77,7 @@ public class ProfessorServiceTest {
 		professor2.setDepartmentId(2L);
 
 		professorService.save(professor1);
+		professorService.save(professor2);
 		System.out.println("professor atualizado");
 	}
 
@@ -86,6 +88,7 @@ public class ProfessorServiceTest {
 		Long id2 = 2L;
 
 		professorService.deleteById(id1);
+		professorService.deleteById(id2);
 		System.out.println("professor deletado");
 	}
 

@@ -25,7 +25,6 @@ public class CourseService {
 	}
 
 	public Course save(Course course) {
-		course.setId(null);
 		return saveInternal(course);
 	}
 

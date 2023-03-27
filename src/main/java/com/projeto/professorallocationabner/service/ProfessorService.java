@@ -28,11 +28,10 @@ public class ProfessorService {
 	}
 	
 	public List<Professor> findByDepartment(Long departmentId) {
-		return professorRepository.findByDepartment(departmentId);
+		return professorRepository.findByDepartmentId(departmentId);
 	}
 
 	public Professor save(Professor professor) {
-		professor.setId(null);
 		return saveInternal(professor);
 	}
 

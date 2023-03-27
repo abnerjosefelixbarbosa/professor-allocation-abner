@@ -44,6 +44,7 @@ public class CourseServiceTest {
 		course2.setName("Course 2");
 
 		courseService.save(course1);
+		courseService.save(course2);
 		System.out.println("curso salvo");
 	}
 	
@@ -58,6 +59,7 @@ public class CourseServiceTest {
 		course2.setName("Course 2");
 
 		courseService.save(course1);
+		courseService.save(course2);
 		System.out.println("curso atualizado");
 	}
 	

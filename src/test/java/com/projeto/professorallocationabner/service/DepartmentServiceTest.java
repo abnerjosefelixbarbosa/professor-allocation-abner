@@ -17,7 +17,7 @@ public class DepartmentServiceTest {
 	private DepartmentService departmentService;
 	
 	@Test
-	@Disabled
+    @Disabled
 	public void findAll() throws Exception {
 		List<Department> departments = departmentService.findAll();
 		departments.forEach(System.out::println);
@@ -43,6 +43,7 @@ public class DepartmentServiceTest {
 		department2.setId(2L);
 		department2.setName("Department 2");
 
+		departmentService.save(department1);
 		departmentService.save(department2);
 		System.out.println("departamento salvo");
 	}
@@ -56,8 +57,9 @@ public class DepartmentServiceTest {
 		Department department2 = new Department();
 		department2.setId(2L);
 		department2.setName("Department 2");
-
+		
 		departmentService.save(department1);
+		departmentService.save(department2);
 		System.out.println("departamento atualizado");
 	}
 	
@@ -68,6 +70,7 @@ public class DepartmentServiceTest {
 		Long id2 = 2L;
 
 		departmentService.deleteById(id1);
+		departmentService.deleteById(id2);
 		System.out.println("departamento deletado");
     }
     

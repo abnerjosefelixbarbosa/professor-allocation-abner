@@ -75,6 +75,7 @@ public class AllocationServiceTest {
 		allocation2.setCourseId(2L);
 
 		allocationService.save(allocation1);
+		allocationService.save(allocation2);
 		System.out.println("alocação salva");
 	}
 

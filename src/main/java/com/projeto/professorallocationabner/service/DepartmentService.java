@@ -25,7 +25,6 @@ public class DepartmentService {
 	}
 
 	public Department save(Department department) {
-		department.setId(null);
 		return saveInternal(department);
 	}
 

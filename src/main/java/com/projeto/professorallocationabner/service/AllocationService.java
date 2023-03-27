@@ -40,7 +40,6 @@ public class AllocationService {
 	}
 
 	public Allocation save(Allocation allocation) {
-		allocation.setId(null);
 		return saveInternal(allocation);
 	}
 
