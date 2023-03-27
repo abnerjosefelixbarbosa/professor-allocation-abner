@@ -21,73 +21,99 @@ public class AllocationServiceTest {
 
 	@Test
 	@Disabled
-	public void findAll() throws Exception  {
-			List<Allocation> allocations = allocationService.findAll();
-			allocations.forEach(System.out::println);
-	}
-
-	@Test
-	@Disabled
-	public void findByProfessor() throws Exception  {
-			Long id = 1L;
-			List<Allocation> allocations = allocationService.findByProfessor(id);
-			allocations.forEach(System.out::println);
-	}
-
-	@Test
-	@Disabled
-	public void findByCourse() throws Exception  {
-			Long id = 1L;
-			List<Allocation> allocations = allocationService.findByCourse(id);
-			allocations.forEach(System.out::println);
+	public void findAll() throws Exception {
+		List<Allocation> allocations = allocationService.findAll();
+		allocations.forEach(System.out::println);
 	}
 
 	@Test
 	@Disabled
 	public void findById() throws Exception {
-		Long id = 1L;
-		Allocation allocation = allocationService.findById(id);
+		Long id1 = 1L;
+		Long id2 = 2L;
+
+		Allocation allocation = allocationService.findById(id1);
 		System.out.println(allocation);
 	}
 
 	@Test
 	@Disabled
-	public void save() throws Exception {
-		Allocation allocation = new Allocation();
-        allocation.setId(null);
-        allocation.setDayOfWeek(DayOfWeek.WEDNESDAY);
-        allocation.setStartHour(sdf.parse("19:00-0300"));
-        allocation.setEndHour(sdf.parse("20:00-0300"));
-        allocation.setProfessorId(1L);
-        allocation.setCourseId(1L);
-        allocation = allocationService.save(allocation);
-        System.out.println(allocation);
+	public void findByProfessor() throws Exception {
+		Long id1 = 1L;
+		Long id2 = 2L;
+		
+		List<Allocation> allocations = allocationService.findByProfessor(id1);
+		allocations.forEach(System.out::println);
 	}
-	
+
+	@Test
+	@Disabled
+	public void findByCourse() throws Exception {
+		Long id1 = 1L;
+		Long id2 = 2L;
+
+		List<Allocation> allocations = allocationService.findByCourse(id1);
+		allocations.forEach(System.out::println);
+	}
+
+	@Test
+	@Disabled
+	public void save() throws Exception {
+		Allocation allocation1 = new Allocation();
+		allocation1.setId(null);
+		allocation1.setDayOfWeek(DayOfWeek.WEDNESDAY);
+		allocation1.setStartHour(sdf.parse("19:00-0300"));
+		allocation1.setEndHour(sdf.parse("20:00-0300"));
+		allocation1.setProfessorId(1L);
+		allocation1.setCourseId(1L);
+		Allocation allocation2 = new Allocation();
+		allocation2.setId(2L);
+		allocation2.setDayOfWeek(DayOfWeek.MONDAY);
+		allocation2.setStartHour(sdf.parse("22:00-0300"));
+		allocation2.setEndHour(sdf.parse("24:00-0300"));
+		allocation2.setProfessorId(2L);
+		allocation2.setCourseId(2L);
+
+		allocationService.save(allocation1);
+		System.out.println("alocação salva");
+	}
+
 	@Test
 	@Disabled
 	public void update() throws Exception {
-		Allocation allocation = new Allocation();
-        allocation.setId(1L);
-        allocation.setDayOfWeek(DayOfWeek.WEDNESDAY);
-        allocation.setStartHour(sdf.parse("19:00-0300"));
-        allocation.setEndHour(sdf.parse("20:00-0300"));
-        allocation.setProfessorId(1L);
-        allocation.setCourseId(1L);
-        allocation = allocationService.update(allocation);
-        System.out.println(allocation);
+		Allocation allocation1 = new Allocation();
+		allocation1.setId(1L);
+		allocation1.setDayOfWeek(DayOfWeek.WEDNESDAY);
+		allocation1.setStartHour(sdf.parse("19:00-0300"));
+		allocation1.setEndHour(sdf.parse("20:00-0300"));
+		allocation1.setProfessorId(1L);
+		allocation1.setCourseId(1L);
+		Allocation allocation2 = new Allocation();
+		allocation2.setId(2L);
+		allocation2.setDayOfWeek(DayOfWeek.MONDAY);
+		allocation2.setStartHour(sdf.parse("22:00-0300"));
+		allocation2.setEndHour(sdf.parse("24:00-0300"));
+		allocation2.setProfessorId(2L);
+		allocation2.setCourseId(2L);
+
+		allocationService.save(allocation1);
+		System.out.println("alocação atualizada");
 	}
-	
+
 	@Test
 	@Disabled
-    public void deleteById() throws Exception {
-        Long id = 1L;
-        allocationService.deleteById(id);
-    }
-	
+	public void deleteById() throws Exception {
+		Long id1 = 1L;
+		Long id2 = 2L;
+
+		allocationService.deleteById(id1);
+		System.out.println("alocação deletada");
+	}
+
 	@Test
 	@Disabled
-    public void deleteAll() throws Exception {
-        allocationService.deleteAll();
-    }
+	public void deleteAll() throws Exception {
+		allocationService.deleteAll();
+		System.out.println("alocações deletadas");
+	}
 }

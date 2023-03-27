@@ -1,31 +1,25 @@
-package com.projeto.professorallocationabner.repository;
+package com.projeto.professorallocationabner.service;
 
 import java.util.List;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 import com.projeto.professorallocationabner.entity.Department;
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
-@Rollback(false)
+@SpringBootTest
 @TestPropertySource(locations = "classpath:application.properties")
-public class DepartmentRepositoryTest {
+public class DepartmentServiceTest {
 	@Autowired
-	private DepartmentRepository departmentRepository;
-
+	private DepartmentService departmentService;
+	
 	@Test
 	@Disabled
 	public void findAll() throws Exception {
-		List<Department> departments = departmentRepository.findAll();
+		List<Department> departments = departmentService.findAll();
 		departments.forEach(System.out::println);
 	}
 
@@ -35,13 +29,13 @@ public class DepartmentRepositoryTest {
 		Long id1 = 1L;
 		Long id2 = 2L;
 
-		Department department = departmentRepository.findById(id1).orElse(null);
+		Department department = departmentService.findById(id1);
 		System.out.println(department.toString());
 	}
 
 	@Test
 	@Disabled
-	public void save_create() throws Exception {
+	public void save() throws Exception {
 		Department department1 = new Department();
 		department1.setId(1L);
 		department1.setName("Department 1");
@@ -49,13 +43,13 @@ public class DepartmentRepositoryTest {
 		department2.setId(2L);
 		department2.setName("Department 2");
 
-		departmentRepository.save(department2);
+		departmentService.save(department2);
 		System.out.println("departamento salvo");
 	}
 
 	@Test
 	@Disabled
-	public void save_update() throws Exception {
+	public void update() throws Exception {
 		Department department1 = new Department();
 		department1.setId(1L);
 		department1.setName("Department 1");
@@ -63,24 +57,24 @@ public class DepartmentRepositoryTest {
 		department2.setId(2L);
 		department2.setName("Department 2");
 
-		departmentRepository.save(department1);
+		departmentService.save(department1);
 		System.out.println("departamento atualizado");
 	}
-
+	
 	@Test
 	@Disabled
 	public void deleteById() throws Exception {
 		Long id1 = 1L;
 		Long id2 = 2L;
 
-		departmentRepository.deleteById(id1);
+		departmentService.deleteById(id1);
 		System.out.println("departamento deletado");
-	}
-
+    }
+    
 	@Test
 	@Disabled
-	public void deleteAll() throws Exception {
-		departmentRepository.deleteAllInBatch();
+    public void deleteAll() throws Exception {
+    	departmentService.deleteAll();
 		System.out.println("departamentos deletados");
-	}
+    }
 }

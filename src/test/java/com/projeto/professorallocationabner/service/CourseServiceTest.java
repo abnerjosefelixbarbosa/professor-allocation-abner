@@ -1,47 +1,41 @@
-package com.projeto.professorallocationabner.repository;
+package com.projeto.professorallocationabner.service;
 
 import java.util.List;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 import com.projeto.professorallocationabner.entity.Course;
 
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
-@Rollback(false)
+@SpringBootTest
 @TestPropertySource(locations = "classpath:application.properties")
-public class CourseRepositoryTest {
+public class CourseServiceTest {
 	@Autowired
-	private CourseRepository courseRepository;
-
+	private CourseService courseService;
+	
 	@Test
 	@Disabled
 	public void findAll() throws Exception {
-		List<Course> courses = courseRepository.findAll();
+		List<Course> courses = courseService.findAll();
 		courses.forEach(System.out::println);
 	}
-
+	
 	@Test
 	@Disabled
 	public void findById() throws Exception {
 		Long id1 = 1L;
 		Long id2 = 2L;
-		Course course = courseRepository.findById(id1).orElse(null);
+		Course course = courseService.findById(id1);
 
 		System.out.println(course.toString());
 	}
-
+	
 	@Test
 	@Disabled
-	public void save_create() throws Exception {
+	public void save() throws Exception {
 		Course course1 = new Course();
 		course1.setId(1L);
 		course1.setName("Course 1");
@@ -49,13 +43,13 @@ public class CourseRepositoryTest {
 		course2.setId(2L);
 		course2.setName("Course 2");
 
-		courseRepository.save(course1);
+		courseService.save(course1);
 		System.out.println("curso salvo");
 	}
-
+	
 	@Test
 	@Disabled
-	public void save_update() throws Exception {
+	public void update() throws Exception {
 		Course course1 = new Course();
 		course1.setId(1L);
 		course1.setName("Course 1");
@@ -63,24 +57,24 @@ public class CourseRepositoryTest {
 		course2.setId(2L);
 		course2.setName("Course 2");
 
-		courseRepository.save(course1);
+		courseService.save(course1);
 		System.out.println("curso atualizado");
 	}
-
+	
 	@Test
 	@Disabled
 	public void deleteById() throws Exception {
 		Long id1 = 1L;
 		Long id2 = 2L;
 
-		courseRepository.deleteById(id1);
+		courseService.deleteById(id1);
 		System.out.println("curso deletado");
 	}
-
+	
 	@Test
 	@Disabled
 	public void deleteAll() throws Exception {
-		courseRepository.deleteAllInBatch();
+		courseService.deleteAll();
 		System.out.println("cursos deletados");
 	}
 }

@@ -26,101 +26,79 @@ public class AllocationRepositoryTest {
 
 	@Test
 	@Disabled
-	public void findAll() {
-		try {
-			List<Allocation> allocations = allocationRepository.findAll();
-			allocations.forEach(System.out::println);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+	public void findAll() throws Exception {
+		List<Allocation> allocations = allocationRepository.findAll();
+		allocations.forEach(System.out::println);
 	}
-	
-	@Test
-	@Disabled
-    public void findById() {
-        try {
-        	Long id = 1L;
-            Allocation allocation = allocationRepository.findById(id).orElse(null);
-            System.out.println(allocation.toString());
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-    }
-	
-	@Test
-	@Disabled
-    public void save_create() {
-        try {
-        	Allocation allocation1 = new Allocation();
-            allocation1.setId(1L);
-            allocation1.setDayOfWeek(DayOfWeek.MONDAY);
-            allocation1.setStartHour(sdf.parse("19:00-0300"));
-            allocation1.setEndHour(sdf.parse("20:00-0300"));
-            allocation1.setProfessorId(1L);
-            allocation1.setCourseId(1L);
-            Allocation allocation2 = new Allocation();
-            allocation2.setId(2L);
-            allocation2.setDayOfWeek(DayOfWeek.MONDAY);
-            allocation2.setStartHour(sdf.parse("22:00-0300"));
-            allocation2.setEndHour(sdf.parse("24:00-0300"));
-            allocation2.setProfessorId(2L);
-            allocation2.setCourseId(2L);
 
-            allocationRepository.save(allocation1);
-            System.out.println("alocação salva");
-        } catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-    }
-	
 	@Test
 	@Disabled
-    public void save_update() {
-        try {
-        	Allocation allocation1 = new Allocation();
-            allocation1.setId(1L);
-            allocation1.setDayOfWeek(DayOfWeek.MONDAY);
-            allocation1.setStartHour(sdf.parse("19:00-0300"));
-            allocation1.setEndHour(sdf.parse("20:00-0300"));
-            allocation1.setProfessorId(1L);
-            allocation1.setCourseId(1L);  
-            Allocation allocation2 = new Allocation();
-            allocation2.setId(2L);
-            allocation2.setDayOfWeek(DayOfWeek.MONDAY);
-            allocation2.setStartHour(sdf.parse("22:00-0300"));
-            allocation2.setEndHour(sdf.parse("24:00-0300"));
-            allocation2.setProfessorId(2L);
-            allocation2.setCourseId(2L);   
+	public void findById() throws Exception {
+		Long id1 = 1L;
+		Long id2 = 2L;
+		
+		Allocation allocation = allocationRepository.findById(id1).orElse(null);
+		System.out.println(allocation.toString());
+	}
 
-            allocationRepository.save(allocation1);
-            System.out.println("alocação salva");
-        } catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-    }
-	
 	@Test
 	@Disabled
-    public void deleteById() {
-		try {
-			Long id1 = 1L;
-			Long id2 = 2L;
-	        
-			allocationRepository.deleteById(id1);
-			System.out.println("alocação deletada");
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-    }
-	
+	public void save_create() throws Exception {
+		Allocation allocation1 = new Allocation();
+		allocation1.setId(1L);
+		allocation1.setDayOfWeek(DayOfWeek.MONDAY);
+		allocation1.setStartHour(sdf.parse("19:00-0300"));
+		allocation1.setEndHour(sdf.parse("20:00-0300"));
+		allocation1.setProfessorId(1L);
+		allocation1.setCourseId(1L);
+		Allocation allocation2 = new Allocation();
+		allocation2.setId(2L);
+		allocation2.setDayOfWeek(DayOfWeek.MONDAY);
+		allocation2.setStartHour(sdf.parse("22:00-0300"));
+		allocation2.setEndHour(sdf.parse("24:00-0300"));
+		allocation2.setProfessorId(2L);
+		allocation2.setCourseId(2L);
+
+		allocationRepository.save(allocation1);
+		System.out.println("alocação salva");
+	}
+
 	@Test
 	@Disabled
-    public void deleteAll() {
-		try {
-			allocationRepository.deleteAllInBatch();
-			System.out.println("alocações deletadas");
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-    }
+	public void save_update() throws Exception {
+		Allocation allocation1 = new Allocation();
+		allocation1.setId(1L);
+		allocation1.setDayOfWeek(DayOfWeek.MONDAY);
+		allocation1.setStartHour(sdf.parse("19:00-0300"));
+		allocation1.setEndHour(sdf.parse("20:00-0300"));
+		allocation1.setProfessorId(1L);
+		allocation1.setCourseId(1L);
+		Allocation allocation2 = new Allocation();
+		allocation2.setId(2L);
+		allocation2.setDayOfWeek(DayOfWeek.MONDAY);
+		allocation2.setStartHour(sdf.parse("22:00-0300"));
+		allocation2.setEndHour(sdf.parse("24:00-0300"));
+		allocation2.setProfessorId(2L);
+		allocation2.setCourseId(2L);
+
+		allocationRepository.save(allocation1);
+		System.out.println("alocação atualizada");
+	}
+
+	@Test
+	@Disabled
+	public void deleteById() throws Exception {
+		Long id1 = 1L;
+		Long id2 = 2L;
+
+		allocationRepository.deleteById(id1);
+		System.out.println("alocação deletada");
+	}
+
+	@Test
+	@Disabled
+	public void deleteAll() throws Exception {
+		allocationRepository.deleteAllInBatch();
+		System.out.println("alocações deletadas");
+	}
 }
