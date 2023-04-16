@@ -19,6 +19,10 @@ public class DepartmentService {
 	public List<Department> findAll() {
 		return departmentRepository.findAll();
 	}
+	
+	public List<Department> findByNameIgnoreCase(String name) {
+		return departmentRepository.findByNameIgnoreCase(name);
+	}
 
 	public Department findById(Long id) {
 		return departmentRepository.findById(id).orElse(null);
