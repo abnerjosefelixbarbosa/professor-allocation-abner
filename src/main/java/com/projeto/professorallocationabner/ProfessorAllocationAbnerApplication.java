@@ -7,5 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ProfessorAllocationAbnerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ProfessorAllocationAbnerApplication.class, args);
-	}
+	}	
+	//http://localhost:8080/swagger-ui/index.html
 }
