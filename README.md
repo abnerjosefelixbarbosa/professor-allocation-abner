@@ -6,6 +6,9 @@
 # About
 This API has goal to manage allocation of professors in courses at the educational institution.
 
+## Diagram class
+![imagem1](https://github.com/abnerjosefelixbarbosa/assents/blob/main/modelo_professor_allocation.png)
+
 # Features
 
 - find all allocations
