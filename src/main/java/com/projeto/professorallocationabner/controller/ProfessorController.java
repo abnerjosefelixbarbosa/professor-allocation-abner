@@ -33,7 +33,9 @@ public class ProfessorController {
 	}
 
 	@ApiOperation(value = "Find all professors")
-	@ApiResponses({ @ApiResponse(code = 200, message = "OK") })
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "OK") 
+	})
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<List<Professor>> findAll() {
@@ -42,8 +44,11 @@ public class ProfessorController {
 	}
 
 	@ApiOperation(value = "Find a professor")
-	@ApiResponses({ @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad Request"),
-			@ApiResponse(code = 404, message = "Not Found") })
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "OK"),
+		@ApiResponse(code = 400, message = "Bad Request"),
+		@ApiResponse(code = 404, message = "Not Found")
+	})
 	@GetMapping(path = "/{professor_id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Professor> findById(@PathVariable(name = "professor_id") Long id) {
@@ -55,7 +60,10 @@ public class ProfessorController {
 	}
 
 	@ApiOperation(value = "Save a professor")
-	@ApiResponses({ @ApiResponse(code = 201, message = "Created"), @ApiResponse(code = 400, message = "Bad Request") })
+	@ApiResponses({
+		@ApiResponse(code = 201, message = "Created"),
+		@ApiResponse(code = 400, message = "Bad Request")
+	})
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Professor> save(@RequestBody Professor professor) {
@@ -68,8 +76,11 @@ public class ProfessorController {
 	}
 
 	@ApiOperation(value = "Update a professor")
-	@ApiResponses({ @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad Request"),
-			@ApiResponse(code = 404, message = "Not Found") })
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "OK"),
+		@ApiResponse(code = 400, message = "Bad Request"),
+		@ApiResponse(code = 404, message = "Not Found")
+	})
 	@PutMapping(path = "/{professor_id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Professor> update(@PathVariable(name = "professor_id") Long id,
@@ -88,7 +99,9 @@ public class ProfessorController {
 	}
 
 	@ApiOperation(value = "Delete a professor")
-	@ApiResponses({ @ApiResponse(code = 204, message = "No Content") })
+	@ApiResponses({
+		@ApiResponse(code = 204, message = "No Content")
+	})
 	@DeleteMapping(path = "/{professor_id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> deleteById(@PathVariable(name = "professor_id") Long id) {
@@ -97,7 +110,9 @@ public class ProfessorController {
 	}
 
 	@ApiOperation(value = "Delete all professors")
-	@ApiResponses({ @ApiResponse(code = 204, message = "No Content") })
+	@ApiResponses({
+		@ApiResponse(code = 204, message = "No Content")
+	})
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> deleteAll() {

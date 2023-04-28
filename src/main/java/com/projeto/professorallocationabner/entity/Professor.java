@@ -25,24 +25,19 @@ public class Professor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
 	@Column(name = "name", nullable = false)
 	private String name;
-
 	@Column(name = "cpf", unique = true, nullable = false, length = 14)
 	private String cpf;
-
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@Column(name = "department_id", nullable = false)
 	private Long departmentId;
-
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@JsonIgnoreProperties({ "professors" })
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "department_id", nullable = false, insertable = false, updatable = false)
 	private Department department;
-
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@OneToMany(mappedBy = "professor")
@@ -52,8 +47,7 @@ public class Professor {
 		super();
 	}
 
-	public Professor(Long id, String name, String cpf, Long departmentId, Department department,
-			List<Allocation> allocations) {
+	public Professor(Long id, String name, String cpf, Long departmentId, Department department, List<Allocation> allocations) {
 		super();
 		this.id = id;
 		this.name = name;

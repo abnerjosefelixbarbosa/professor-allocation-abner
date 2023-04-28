@@ -32,42 +32,35 @@ public class Allocation {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
+	private Long id;	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "day", nullable = false)
-	private DayOfWeek day;
-	
+	private DayOfWeek day;	
 	@ApiModelProperty(example = "10:00-0300")
 	@JsonFormat(pattern = "HH:mmZ")
 	@JsonSerialize(using = DateSerializer.class)
 	@JsonDeserialize(using = DateDeserializers.DateDeserializer.class)
 	@Temporal(TemporalType.TIME)
 	@Column(name = "start", nullable = false)
-	private Date startHour;
-	
+	private Date startHour;	
 	@ApiModelProperty(example = "12:00-0300")
 	@JsonFormat(pattern = "HH:mmZ")
 	@JsonSerialize(using = DateSerializer.class)
 	@JsonDeserialize(using = DateDeserializers.DateDeserializer.class)
 	@Temporal(TemporalType.TIME)
 	@Column(name = "end", nullable = false)
-	private Date endHour;
-	
+	private Date endHour;	
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@Column(name = "course_id", nullable = false)
-	private Long courseId;
-	
+	private Long courseId;	
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@Column(name = "professor_id", nullable = false)
-	private Long professorId;
-	
+	private Long professorId;	
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@JsonIgnoreProperties({ "allocations" })
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "professor_id", nullable = false, insertable = false, updatable = false)
-	private Professor professor;
-	
+	private Professor professor;	
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@JsonIgnoreProperties({ "allocations" })
 	@ManyToOne(optional = false)
@@ -78,8 +71,7 @@ public class Allocation {
 		super();
 	}
 
-	public Allocation(Long id, DayOfWeek day, Date startHour, Date endHour, Long courseId, Long professorId,
-			Professor professor, Course course) {
+	public Allocation(Long id, DayOfWeek day, Date startHour, Date endHour, Long courseId, Long professorId, Professor professor, Course course) {
 		super();
 		this.id = id;
 		this.day = day;

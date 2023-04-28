@@ -18,14 +18,19 @@ import springfox.documentation.spring.web.plugins.Docket;
 public class SwaggerConfig {
 	@Bean
 	public Docket api() {
-		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors
-						.basePackage(ProfessorAllocationAbnerApplication.class.getPackage().getName()))
-				.paths(PathSelectors.any()).build().useDefaultResponseMessages(false).apiInfo(getApiInfo());
+		return new Docket(DocumentationType.SWAGGER_2)
+				.select()
+				.apis(RequestHandlerSelectors.basePackage(ProfessorAllocationAbnerApplication.class.getPackage().getName()))
+				.paths(PathSelectors.any())
+				.build()
+				.useDefaultResponseMessages(false)
+				.apiInfo(getApiInfo());
 	}
 
 	private ApiInfo getApiInfo() {
-		return new ApiInfoBuilder().title("Professor Allocation").description("Professor Allocation Rest Server")
+		return new ApiInfoBuilder()
+				.title("Professor Allocation")
+				.description("Professor Allocation Rest Server")
 				.version("0.0.1-SNAPSHOT").build();
 	}
 }

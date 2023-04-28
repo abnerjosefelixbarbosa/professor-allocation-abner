@@ -18,11 +18,9 @@ public class Department {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
+	private Long id;	
 	@Column(name = "name", unique = true, nullable = false)
-	private String name;
-	
+	private String name;	
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@OneToMany(mappedBy = "department")
 	private List<Professor> professors;
