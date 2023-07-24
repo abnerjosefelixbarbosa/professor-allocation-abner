@@ -1,4 +1,4 @@
-package com.projeto.professorallocationabner.service;
+package com.projeto.professorallocationabner.models.repositories;
 
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
@@ -7,22 +7,28 @@ import java.util.List;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 
-import com.projeto.professorallocationabner.entity.Allocation;
+import com.projeto.professorallocationabner.models.entities.Allocation;
+import com.projeto.professorallocationabner.models.repositories.AllocationRepository;
 
-@SpringBootTest
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = Replace.NONE)
+@Rollback(false)
 @TestPropertySource(locations = "classpath:application.properties")
-public class AllocationServiceTest {
+public class AllocationRepositoryTest {
 	@Autowired
-	private AllocationService allocationService;
+	private AllocationRepository allocationRepository;
 	private SimpleDateFormat sdf = new SimpleDateFormat("HH:mmZ");
 
 	@Test
 	@Disabled
 	public void findAll() throws Exception {
-		List<Allocation> allocations = allocationService.findAll();
+		List<Allocation> allocations = allocationRepository.findAll();
 		allocations.forEach(System.out::println);
 	}
 
@@ -31,37 +37,17 @@ public class AllocationServiceTest {
 	public void findById() throws Exception {
 		Long id1 = 1L;
 		Long id2 = 2L;
-
-		Allocation allocation = allocationService.findById(id1);
-		System.out.println(allocation);
-	}
-
-	@Test
-	@Disabled
-	public void findByProfessor() throws Exception {
-		Long id1 = 1L;
-		Long id2 = 2L;
 		
-		List<Allocation> allocations = allocationService.findByProfessor(id1);
-		allocations.forEach(System.out::println);
+		Allocation allocation = allocationRepository.findById(id1).orElse(null);
+		System.out.println(allocation.toString());
 	}
 
 	@Test
 	@Disabled
-	public void findByCourse() throws Exception {
-		Long id1 = 1L;
-		Long id2 = 2L;
-
-		List<Allocation> allocations = allocationService.findByCourse(id1);
-		allocations.forEach(System.out::println);
-	}
-
-	@Test
-	@Disabled
-	public void save() throws Exception {
+	public void save_create() throws Exception {
 		Allocation allocation1 = new Allocation();
-		allocation1.setId(null);
-		allocation1.setDayOfWeek(DayOfWeek.WEDNESDAY);
+		allocation1.setId(1L);
+		allocation1.setDayOfWeek(DayOfWeek.MONDAY);
 		allocation1.setStartHour(sdf.parse("19:00-0300"));
 		allocation1.setEndHour(sdf.parse("20:00-0300"));
 		allocation1.setProfessorId(1L);
@@ -74,17 +60,16 @@ public class AllocationServiceTest {
 		allocation2.setProfessorId(2L);
 		allocation2.setCourseId(2L);
 
-		allocationService.save(allocation1);
-		allocationService.save(allocation2);
+		allocationRepository.save(allocation1);
 		System.out.println("alocação salva");
 	}
 
 	@Test
 	@Disabled
-	public void update() throws Exception {
+	public void save_update() throws Exception {
 		Allocation allocation1 = new Allocation();
 		allocation1.setId(1L);
-		allocation1.setDayOfWeek(DayOfWeek.WEDNESDAY);
+		allocation1.setDayOfWeek(DayOfWeek.MONDAY);
 		allocation1.setStartHour(sdf.parse("19:00-0300"));
 		allocation1.setEndHour(sdf.parse("20:00-0300"));
 		allocation1.setProfessorId(1L);
@@ -97,7 +82,7 @@ public class AllocationServiceTest {
 		allocation2.setProfessorId(2L);
 		allocation2.setCourseId(2L);
 
-		allocationService.save(allocation1);
+		allocationRepository.save(allocation1);
 		System.out.println("alocação atualizada");
 	}
 
@@ -107,14 +92,14 @@ public class AllocationServiceTest {
 		Long id1 = 1L;
 		Long id2 = 2L;
 
-		allocationService.deleteById(id1);
+		allocationRepository.deleteById(id1);
 		System.out.println("alocação deletada");
 	}
 
 	@Test
 	@Disabled
 	public void deleteAll() throws Exception {
-		allocationService.deleteAll();
+		allocationRepository.deleteAllInBatch();
 		System.out.println("alocações deletadas");
 	}
 }

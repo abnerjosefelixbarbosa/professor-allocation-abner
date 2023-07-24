@@ -1,4 +1,4 @@
-package com.projeto.professorallocationabner.service;
+package com.projeto.professorallocationabner.models.services;
 
 import java.util.List;
 
@@ -8,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
-import com.projeto.professorallocationabner.entity.Course;
+import com.projeto.professorallocationabner.models.entities.Course;
+import com.projeto.professorallocationabner.models.services.CourseService;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application.properties")

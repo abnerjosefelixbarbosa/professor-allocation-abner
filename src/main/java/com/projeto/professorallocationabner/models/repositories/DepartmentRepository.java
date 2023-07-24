@@ -1,11 +1,11 @@
-package com.projeto.professorallocationabner.repository;
+package com.projeto.professorallocationabner.models.repositories;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.projeto.professorallocationabner.entity.Department;
+import com.projeto.professorallocationabner.models.entities.Department;
 
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {

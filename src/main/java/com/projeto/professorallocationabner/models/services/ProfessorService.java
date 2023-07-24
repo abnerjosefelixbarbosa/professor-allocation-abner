@@ -1,12 +1,12 @@
-package com.projeto.professorallocationabner.service;
+package com.projeto.professorallocationabner.models.services;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.projeto.professorallocationabner.entity.Department;
-import com.projeto.professorallocationabner.entity.Professor;
-import com.projeto.professorallocationabner.repository.ProfessorRepository;
+import com.projeto.professorallocationabner.models.entities.Department;
+import com.projeto.professorallocationabner.models.entities.Professor;
+import com.projeto.professorallocationabner.models.repositories.ProfessorRepository;
 
 @Service
 public class ProfessorService {

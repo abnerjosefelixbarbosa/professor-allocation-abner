@@ -1,7 +1,8 @@
-package com.projeto.professorallocationabner.controller;
+package com.projeto.professorallocationabner.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projeto.professorallocationabner.entity.Course;
-import com.projeto.professorallocationabner.service.CourseService;
+import com.projeto.professorallocationabner.models.entities.Course;
+import com.projeto.professorallocationabner.models.services.CourseService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -25,12 +26,8 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping(path = "/courses")
 public class CourseController {
-	private final CourseService courseService;
-
-	public CourseController(CourseService courseService) {
-		super();
-		this.courseService = courseService;
-	}
+	@Autowired
+	private CourseService courseService;
 	
 	@ApiOperation(value = "Find all courses")
 	@ApiResponses({

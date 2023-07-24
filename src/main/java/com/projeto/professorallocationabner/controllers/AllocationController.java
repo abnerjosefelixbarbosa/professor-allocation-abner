@@ -1,7 +1,8 @@
-package com.projeto.professorallocationabner.controller;
+package com.projeto.professorallocationabner.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projeto.professorallocationabner.entity.Allocation;
-import com.projeto.professorallocationabner.service.AllocationService;
+import com.projeto.professorallocationabner.models.entities.Allocation;
+import com.projeto.professorallocationabner.models.services.AllocationService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -25,12 +26,8 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping(path = "/allocations")
 public class AllocationController {
-	private final AllocationService allocationService;
-
-	public AllocationController(AllocationService allocationService) {
-		super();
-		this.allocationService = allocationService;
-	}
+	@Autowired
+	private AllocationService allocationService;
 
 	@ApiOperation(value = "Find all allocations")
 	@ApiResponses({ 
