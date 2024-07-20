@@ -14,7 +14,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 
 import com.projeto.professorallocationabner.models.entities.Allocation;
-import com.projeto.professorallocationabner.models.repositories.AllocationRepository;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -47,14 +46,14 @@ public class AllocationRepositoryTest {
 	public void save_create() throws Exception {
 		Allocation allocation1 = new Allocation();
 		allocation1.setId(1L);
-		allocation1.setDayOfWeek(DayOfWeek.MONDAY);
+		allocation1.setDay(DayOfWeek.MONDAY);
 		allocation1.setStartHour(sdf.parse("19:00-0300"));
 		allocation1.setEndHour(sdf.parse("20:00-0300"));
 		allocation1.setProfessorId(1L);
 		allocation1.setCourseId(1L);
 		Allocation allocation2 = new Allocation();
 		allocation2.setId(2L);
-		allocation2.setDayOfWeek(DayOfWeek.MONDAY);
+		allocation2.setDay(DayOfWeek.MONDAY);
 		allocation2.setStartHour(sdf.parse("22:00-0300"));
 		allocation2.setEndHour(sdf.parse("24:00-0300"));
 		allocation2.setProfessorId(2L);
@@ -69,14 +68,14 @@ public class AllocationRepositoryTest {
 	public void save_update() throws Exception {
 		Allocation allocation1 = new Allocation();
 		allocation1.setId(1L);
-		allocation1.setDayOfWeek(DayOfWeek.MONDAY);
+		allocation1.setDay(DayOfWeek.MONDAY);
 		allocation1.setStartHour(sdf.parse("19:00-0300"));
 		allocation1.setEndHour(sdf.parse("20:00-0300"));
 		allocation1.setProfessorId(1L);
 		allocation1.setCourseId(1L);
 		Allocation allocation2 = new Allocation();
 		allocation2.setId(2L);
-		allocation2.setDayOfWeek(DayOfWeek.MONDAY);
+		allocation2.setDay(DayOfWeek.MONDAY);
 		allocation2.setStartHour(sdf.parse("22:00-0300"));
 		allocation2.setEndHour(sdf.parse("24:00-0300"));
 		allocation2.setProfessorId(2L);

@@ -7,14 +7,12 @@ import org.springframework.stereotype.Service;
 import com.projeto.professorallocationabner.models.entities.Course;
 import com.projeto.professorallocationabner.models.repositories.CourseRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class CourseService {
 	private final CourseRepository courseRepository;
-
-	public CourseService(CourseRepository courseRepository) {
-		super();
-		this.courseRepository = courseRepository;
-	}
 
 	public List<Course> findAll() {
 		return courseRepository.findAll();

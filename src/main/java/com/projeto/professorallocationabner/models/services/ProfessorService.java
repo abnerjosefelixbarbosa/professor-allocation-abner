@@ -8,16 +8,13 @@ import com.projeto.professorallocationabner.models.entities.Department;
 import com.projeto.professorallocationabner.models.entities.Professor;
 import com.projeto.professorallocationabner.models.repositories.ProfessorRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class ProfessorService {
 	private final ProfessorRepository professorRepository;
 	private final DepartmentService departmentService;
-	
-	public ProfessorService(ProfessorRepository professorRepository, DepartmentService departmentService) {
-		super();
-		this.professorRepository = professorRepository;
-		this.departmentService = departmentService;
-	}
 
 	public List<Professor> findAll() {
 		return professorRepository.findAll();

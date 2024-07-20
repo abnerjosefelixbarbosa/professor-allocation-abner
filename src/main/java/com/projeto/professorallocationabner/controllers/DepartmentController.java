@@ -2,7 +2,6 @@ package com.projeto.professorallocationabner.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,18 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projeto.professorallocationabner.models.entities.Department;
 import com.projeto.professorallocationabner.models.services.DepartmentService;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping(path = "/departments")
+@RequiredArgsConstructor
 public class DepartmentController {
-	@Autowired
-	private DepartmentService departmentService;
+	private final DepartmentService departmentService;
 
-	@ApiOperation(value = "Find all departments")
-	@ApiResponses({ @ApiResponse(code = 200, message = "OK") })
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<List<Department>> findAll() {
@@ -39,8 +34,6 @@ public class DepartmentController {
 		return new ResponseEntity<>(departments, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Find departments by name")
-	@ApiResponses({ @ApiResponse(code = 200, message = "OK") })
 	@GetMapping(path = "/find-by-name", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<List<Department>> findByNameIgnoreCase(
@@ -49,9 +42,6 @@ public class DepartmentController {
 		return new ResponseEntity<>(departments, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Find a department")
-	@ApiResponses({ @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad Request"),
-			@ApiResponse(code = 404, message = "Not Found") })
 	@GetMapping(path = "/{department_id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Department> findById(@PathVariable(name = "department_id") Long id) {
@@ -62,8 +52,6 @@ public class DepartmentController {
 			return new ResponseEntity<>(department, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "Save a department")
-	@ApiResponses({ @ApiResponse(code = 201, message = "Created"), @ApiResponse(code = 400, message = "Bad Request") })
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Department> save(@RequestBody Department department) {
@@ -75,9 +63,6 @@ public class DepartmentController {
 		}
 	}
 
-	@ApiOperation(value = "Update a department")
-	@ApiResponses({ @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad Request"),
-			@ApiResponse(code = 404, message = "Not Found") })
 	@PutMapping(path = "/{department_id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Department> update(@PathVariable(name = "department_id") Long id,
@@ -94,9 +79,7 @@ public class DepartmentController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-
-	@ApiOperation(value = "Delete a department")
-	@ApiResponses({ @ApiResponse(code = 204, message = "No Content") })
+	
 	@DeleteMapping(path = "/{department_id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> deleteById(@PathVariable(name = "department_id") Long id) {
@@ -104,8 +87,6 @@ public class DepartmentController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@ApiOperation(value = "Delete all departments")
-	@ApiResponses({ @ApiResponse(code = 204, message = "No Content") })
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> deleteAll() {

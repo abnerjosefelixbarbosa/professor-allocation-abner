@@ -2,50 +2,70 @@ package com.projeto.professorallocationabner.models.services;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.projeto.professorallocationabner.models.dtos.AllocationDto;
 import com.projeto.professorallocationabner.models.entities.Allocation;
 import com.projeto.professorallocationabner.models.entities.Course;
 import com.projeto.professorallocationabner.models.entities.Professor;
+import com.projeto.professorallocationabner.models.exceptions.NotFound;
+import com.projeto.professorallocationabner.models.mappers.AllocationMapper;
 import com.projeto.professorallocationabner.models.repositories.AllocationRepository;
+import com.projeto.professorallocationabner.models.views.AllocationView;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class AllocationService {
 	private final AllocationRepository allocationRepository;
 	private final ProfessorService professorService;
 	private final CourseService courseService;
+	private final AllocationMapper allocationMapper;
 
-	public AllocationService(AllocationRepository allocationRepository, ProfessorService professorService, CourseService courseService) {
-		super();
-		this.allocationRepository = allocationRepository;
-		this.professorService = professorService;
-		this.courseService = courseService;
+	public Page<AllocationView> findAll(Pageable pageable) {
+		return allocationRepository
+				.findAll(pageable)
+				.map(allocationMapper::toAllocationView);
 	}
 
-	public List<Allocation> findAll() {
-		return allocationRepository.findAll();
+	public AllocationView findById(Long id) {
+		return allocationRepository
+				.findById(id)
+				.map(allocationMapper::toAllocationView)
+				.orElseThrow(() -> new NotFound("id not found"));
 	}
 
-	public Allocation findById(Long id) {
-		return allocationRepository.findById(id).orElse(null);
+	public Page<AllocationView> findByProfessor(Long professorId, Pageable pageable) {
+		return allocationRepository
+				.findByProfessorId(professorId, pageable)
+				.map(allocationMapper::toAllocationView);
 	}
 
-	public List<Allocation> findByProfessor(Long professorId) {
-		return allocationRepository.findByProfessorId(professorId);
+	public Page<AllocationView> findByCourse(Long courseId, Pageable pageable) {
+		return allocationRepository
+				.findByCourseId(courseId, pageable)
+				.map(allocationMapper::toAllocationView);
 	}
 
-	public List<Allocation> findByCourse(Long courseId) {
-		return allocationRepository.findByCourseId(courseId);
+	public AllocationView save(AllocationDto dto) {
+		Allocation allocation = saveInternal(allocationMapper.toAllocation(dto));
+		return allocationMapper
+				.toAllocationView(allocation);
 	}
 
-	public Allocation save(Allocation allocation) {
-		return saveInternal(allocation);
-	}
-
-	public Allocation update(Allocation allocation) {
-		Long id = allocation.getId();
+	public AllocationView update(AllocationDto dto) {
+		Long id = dto.id();
+		
+		
+		
+		
 		if (id != null && allocationRepository.existsById(id)) {
-			return saveInternal(allocation);
+			Allocation allocation = saveInternal(allocationMapper.toAllocation(dto));
+			return allocationMapper
+					.toAllocationView(allocation);
 		} else {
 			return null;
 		}
@@ -99,7 +119,7 @@ public class AllocationService {
 
 	private boolean hasCollision(Allocation currentAllocation, Allocation newAllocation) {
 		return !currentAllocation.getId().equals(newAllocation.getId())
-				&& currentAllocation.getDayOfWeek() == newAllocation.getDayOfWeek()
+				&& currentAllocation.getDay() == newAllocation.getDay()
 				&& currentAllocation.getStartHour().compareTo(newAllocation.getEndHour()) < 0
 				&& newAllocation.getStartHour().compareTo(currentAllocation.getEndHour()) < 0;
 	}

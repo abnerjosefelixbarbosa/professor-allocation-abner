@@ -7,14 +7,12 @@ import org.springframework.stereotype.Service;
 import com.projeto.professorallocationabner.models.entities.Department;
 import com.projeto.professorallocationabner.models.repositories.DepartmentRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class DepartmentService {
 	private final DepartmentRepository departmentRepository;
-
-	public DepartmentService(DepartmentRepository departmentRepository) {
-		super();
-		this.departmentRepository = departmentRepository;
-	}
 	
 	public List<Department> findAll() {
 		return departmentRepository.findAll();
