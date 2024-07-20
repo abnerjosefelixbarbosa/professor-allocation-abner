@@ -57,23 +57,17 @@ public class AllocationService {
 	}
 
 	public AllocationView update(AllocationDto dto) {
-		Long id = dto.id();
-		
-		
-		
-		
-		if (id != null && allocationRepository.existsById(id)) {
+		return allocationRepository.findById(dto.id()).map((val) -> {
 			Allocation allocation = saveInternal(allocationMapper.toAllocation(dto));
 			return allocationMapper
 					.toAllocationView(allocation);
-		} else {
-			return null;
-		}
+		})
+		.orElseThrow(() -> new NotFound("id not found"));
 	}
 
 	private Allocation saveInternal(Allocation allocation) {
 		if (!isEndHourGreaterThanStartHour(allocation) || hasCollision(allocation)) {
-			throw new RuntimeException();
+			throw new RuntimeException("allocation invalid");
 		} else {
 			allocation = allocationRepository.save(allocation);
 
