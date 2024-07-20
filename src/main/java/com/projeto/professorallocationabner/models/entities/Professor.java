@@ -1,5 +1,6 @@
 package com.projeto.professorallocationabner.models.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.annotations.OnDelete;
@@ -23,8 +24,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Professor {
-	//@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+public class Professor implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -32,16 +34,12 @@ public class Professor {
 	private String name;
 	@Column(name = "cpf", unique = true, nullable = false, length = 14)
 	private String cpf;
-	//@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@Column(name = "department_id", nullable = false)
 	private Long departmentId;
-	//@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	//@JsonIgnoreProperties({ "professors" })
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "department_id", nullable = false, insertable = false, updatable = false)
 	private Department department;
-	//@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@OneToMany(mappedBy = "professor")
 	private List<Allocation> allocations;

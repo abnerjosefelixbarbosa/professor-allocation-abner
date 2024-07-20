@@ -1,20 +1,20 @@
 package com.projeto.professorallocationabner.models.services;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.projeto.professorallocationabner.models.dtos.AllocationDto;
+import com.projeto.professorallocationabner.models.dtos.AllocationView;
 import com.projeto.professorallocationabner.models.entities.Allocation;
 import com.projeto.professorallocationabner.models.entities.Course;
 import com.projeto.professorallocationabner.models.entities.Professor;
 import com.projeto.professorallocationabner.models.exceptions.NotFound;
 import com.projeto.professorallocationabner.models.mappers.AllocationMapper;
 import com.projeto.professorallocationabner.models.repositories.AllocationRepository;
-import com.projeto.professorallocationabner.models.views.AllocationView;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -35,7 +35,7 @@ public class AllocationService {
 		return allocationRepository
 				.findById(id)
 				.map(allocationMapper::toAllocationView)
-				.orElseThrow(() -> new NotFound("id not found"));
+				.orElseThrow(() -> new NotFound("allocation not found"));
 	}
 
 	public Page<AllocationView> findByProfessor(Long professorId, Pageable pageable) {
@@ -51,20 +51,32 @@ public class AllocationService {
 	}
 
 	public AllocationView save(AllocationDto dto) {
-		Allocation allocation = saveInternal(allocationMapper.toAllocation(dto));
+		Allocation allocation = allocationMapper.toAllocation(dto);
+		allocation = saveInternal(allocation);
 		return allocationMapper
 				.toAllocationView(allocation);
 	}
 
-	public AllocationView update(AllocationDto dto) {
-		return allocationRepository.findById(dto.id()).map((val) -> {
-			Allocation allocation = saveInternal(allocationMapper.toAllocation(dto));
+	public AllocationView update(Long id, AllocationDto dto) {
+		return allocationRepository.findById(id).map((val) -> {
+			Allocation allocation = allocationMapper.toAllocation(dto);
+			allocation = saveInternal(allocation);
 			return allocationMapper
 					.toAllocationView(allocation);
 		})
-		.orElseThrow(() -> new NotFound("id not found"));
+		.orElseThrow(() -> new NotFound("allocation not found"));
 	}
 
+	public void deleteById(Long id) {
+		Allocation allocation = allocationRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("allocation not found"));
+		allocationRepository.delete(allocation);
+	}
+
+	public void deleteAll() {
+		allocationRepository.deleteAllInBatch();
+	}
+	
 	private Allocation saveInternal(Allocation allocation) {
 		if (!isEndHourGreaterThanStartHour(allocation) || hasCollision(allocation)) {
 			throw new RuntimeException("allocation invalid");
@@ -81,23 +93,15 @@ public class AllocationService {
 		}
 	}
 
-	public void deleteById(Long id) {
-		if (allocationRepository.existsById(id)) {
-			allocationRepository.deleteById(id);
-		}
-	}
-
-	public void deleteAll() {
-		allocationRepository.deleteAllInBatch();
-	}
-
-	private boolean hasCollision(Allocation newAllocation) {
+	private boolean hasCollision(Allocation allocation) {
 		boolean hasCollision = false;
+		Pageable pageable = PageRequest.ofSize(20);
 
-		List<Allocation> currentAllocations = allocationRepository.findByProfessorId(newAllocation.getProfessorId());
-
-		for (Allocation currentAllocation : currentAllocations) {
-			hasCollision = hasCollision(currentAllocation, newAllocation);
+		Page<Allocation> allocations = allocationRepository
+				.findByProfessorId(allocation.getProfessorId(), pageable);
+		
+		for (Allocation val : allocations) {
+			hasCollision = hasCollision(val, allocation);
 			if (hasCollision) {
 				break;
 			}
@@ -107,7 +111,9 @@ public class AllocationService {
 	}
 
 	private boolean isEndHourGreaterThanStartHour(Allocation allocation) {
-		return allocation != null && allocation.getStartHour() != null && allocation.getEndHour() != null
+		return allocation != null
+				&& allocation.getStartHour() != null 
+				&& allocation.getEndHour() != null
 				&& allocation.getEndHour().compareTo(allocation.getStartHour()) > 0;
 	}
 

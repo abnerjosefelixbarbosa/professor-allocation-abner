@@ -8,6 +8,7 @@ import com.projeto.professorallocationabner.models.entities.Department;
 import com.projeto.professorallocationabner.models.entities.Professor;
 import com.projeto.professorallocationabner.models.repositories.ProfessorRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -21,7 +22,8 @@ public class ProfessorService {
 	}
 
 	public Professor findById(Long id) {
-		return professorRepository.findById(id).orElse(null);
+		return professorRepository
+				.findById(id).orElseThrow(() -> new EntityNotFoundException("professor not found"));
 	}
 	
 	public List<Professor> findByDepartment(Long departmentId) {

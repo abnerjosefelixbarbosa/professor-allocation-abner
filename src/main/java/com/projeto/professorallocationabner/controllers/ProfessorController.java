@@ -1,7 +1,7 @@
 package com.projeto.professorallocationabner.controllers;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,19 +28,16 @@ public class ProfessorController {
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<List<Professor>> findAll() {
-		List<Professor> professors = professorService.findAll();
-		return new ResponseEntity<>(professors, HttpStatus.OK);
+	public ResponseEntity<Page<Professor>> findAll(Pageable pageable) {
+		Page<Professor> page = professorService.findAll(pageable);
+		return ResponseEntity.status(201).body(page);
 	}
 
 	@GetMapping(path = "/{professor_id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Professor> findById(@PathVariable(name = "professor_id") Long id) {
-		Professor professor = professorService.findById(id);
-		if (professor == null)
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		else
-			return new ResponseEntity<>(professor, HttpStatus.OK);
+	public ResponseEntity<ProfessorView> findById(@PathVariable(name = "professor_id") Long id) {
+		ProfessorView view = professorService.findById(id);
+		return ResponseEntity.status(201).body(view);
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

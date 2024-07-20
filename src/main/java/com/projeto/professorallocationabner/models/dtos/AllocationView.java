@@ -1,4 +1,4 @@
-package com.projeto.professorallocationabner.models.views;
+package com.projeto.professorallocationabner.models.dtos;
 
 import java.time.DayOfWeek;
 import java.util.Date;

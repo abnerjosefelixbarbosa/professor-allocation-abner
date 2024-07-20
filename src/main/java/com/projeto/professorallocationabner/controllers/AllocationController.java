@@ -1,7 +1,7 @@
 package com.projeto.professorallocationabner.controllers;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +16,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.professorallocationabner.models.dtos.AllocationDto;
-import com.projeto.professorallocationabner.models.entities.Allocation;
+import com.projeto.professorallocationabner.models.dtos.AllocationView;
 import com.projeto.professorallocationabner.models.services.AllocationService;
-import com.projeto.professorallocationabner.models.views.AllocationView;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,19 +30,16 @@ public class AllocationController {
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<List<Allocation>> findAll() {
-		List<Allocation> allocations = allocationService.findAll();
-		return new ResponseEntity<>(allocations, HttpStatus.OK);
+	public ResponseEntity<Page<AllocationView>> findAll(Pageable pageable) {
+		Page<AllocationView> page = allocationService.findAll(pageable);
+		return ResponseEntity.status(200).body(page);
 	}
 
 	@GetMapping(path = "/{allocation_id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Allocation> findById(@PathVariable(name = "allocation_id") Long id) {
-		Allocation allocation = allocationService.findById(id);
-		if (allocation == null)
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		else
-			return new ResponseEntity<>(allocation, HttpStatus.OK);
+	public ResponseEntity<AllocationView> findById(@PathVariable(name = "allocation_id") Long id) {
+		AllocationView view = allocationService.findById(id);
+		return ResponseEntity.status(200).body(view);
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -55,32 +51,23 @@ public class AllocationController {
 
 	@PutMapping(path = "/{allocation_id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Allocation> update(@PathVariable(name = "allocation_id") Long id,
-			@RequestBody Allocation allocation) {
-		allocation.setId(id);
-		try {
-			allocation = allocationService.update(allocation);
-			if (allocation == null) {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			} else {
-				return new ResponseEntity<>(allocation, HttpStatus.OK);
-			}
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<AllocationView> update(@PathVariable(name = "allocation_id") Long id,
+			@RequestBody AllocationDto dto) {
+		AllocationView view = allocationService.update(id, dto);
+		return ResponseEntity.status(200).body(view);
 	}
 
 	@DeleteMapping(path = "/{allocation_id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> deleteById(@PathVariable(name = "allocation_id") Long id) {
 		allocationService.deleteById(id);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return ResponseEntity.status(204).body(null);
 	}
 
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> deleteAll() {
 		allocationService.deleteAll();
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return ResponseEntity.status(204).body(null);
 	}
 }

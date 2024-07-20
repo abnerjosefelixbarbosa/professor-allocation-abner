@@ -1,5 +1,6 @@
 package com.projeto.professorallocationabner.models.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -18,14 +19,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Department {
-	//@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+public class Department implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;	
 	@Column(name = "name", unique = true, nullable = false)
 	private String name;	
-	//@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@OneToMany(mappedBy = "department")
 	private List<Professor> professors;
 }

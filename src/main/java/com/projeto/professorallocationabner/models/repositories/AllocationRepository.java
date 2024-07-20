@@ -11,4 +11,5 @@ import com.projeto.professorallocationabner.models.entities.Allocation;
 public interface AllocationRepository extends JpaRepository<Allocation, Long> {
 	Page<Allocation> findByProfessorId(Long professorId, Pageable pageable);
 	Page<Allocation> findByCourseId(Long courseId, Pageable pageable);
+	boolean existsByProfessorId(Long professorId);
 }

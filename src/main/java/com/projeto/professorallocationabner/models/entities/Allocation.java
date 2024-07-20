@@ -1,5 +1,6 @@
 package com.projeto.professorallocationabner.models.entities;
 
+import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.util.Date;
 
@@ -26,7 +27,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Allocation {
+public class Allocation implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;	

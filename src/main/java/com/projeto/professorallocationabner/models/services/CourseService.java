@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.projeto.professorallocationabner.models.entities.Course;
 import com.projeto.professorallocationabner.models.repositories.CourseRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -19,7 +20,8 @@ public class CourseService {
 	}
 
 	public Course findById(Long id) {
-		return courseRepository.findById(id).orElse(null);
+		return courseRepository
+				.findById(id).orElseThrow(() -> new EntityNotFoundException("course not found"));
 	}
 
 	public Course save(Course course) {
