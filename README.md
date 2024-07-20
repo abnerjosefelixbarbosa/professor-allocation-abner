@@ -6,9 +6,6 @@
 # About
 This API has goal to manage allocation of professors in courses at the educational institution.
 
-## Diagram class
-![imagem1](https://github.com/abnerjosefelixbarbosa/assents/blob/main/modelo_professor_allocation.png)
-
 # Features
 
 - find all allocations
@@ -43,7 +40,7 @@ This API has goal to manage allocation of professors in courses at the education
 # Technologies
 
 ## Back end
-- Java 8
+- Java 17
 - JPA hibernate
 - Maven
 - MySql 
@@ -52,7 +49,8 @@ This API has goal to manage allocation of professors in courses at the education
 - Swagger
 
 # Project Execution
-Prerequisite: Java 8
+
+- Clone o repositorio e execute em uma IDE  
 
 ```bash
 # clone repository
