@@ -1,10 +1,13 @@
 package com.projeto.professorallocationabner.models.services;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.projeto.professorallocationabner.models.dtos.CourseDTO;
+import com.projeto.professorallocationabner.models.dtos.CourseView;
 import com.projeto.professorallocationabner.models.entities.Course;
+import com.projeto.professorallocationabner.models.mappers.CourseMapper;
 import com.projeto.professorallocationabner.models.repositories.CourseRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -14,41 +17,53 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CourseService {
 	private final CourseRepository courseRepository;
+	private final CourseMapper courseMapper;
 
-	public List<Course> findAll() {
-		return courseRepository.findAll();
-	}
-
-	public Course findById(Long id) {
+	public Page<CourseView> findAll(Pageable pageable) {
 		return courseRepository
-				.findById(id).orElseThrow(() -> new EntityNotFoundException("course not found"));
+				.findAll(pageable)
+				.map(courseMapper::toCourseView);
 	}
 
-	public Course save(Course course) {
-		return saveInternal(course);
+	public CourseView findById(Long id) {
+		return courseRepository
+				.findById(id)
+				.map(courseMapper::toCourseView)
+				.orElseThrow(() -> new EntityNotFoundException("course not found"));
 	}
 
-	public Course update(Course course) {
-		Long id = course.getId();
-		if (id != null && courseRepository.existsById(id)) {
-			return saveInternal(course);
-		} else {
-			return null;
-		}
+	public CourseView save(CourseDTO dto) {
+		Course course = courseMapper.toCourse(dto);
+		course = saveInternal(course);
+		return courseMapper.toCourseView(course);
 	}
 
-	private Course saveInternal(Course course) {
-		course = courseRepository.save(course);
-		return course;
+	public CourseView update(CourseDTO dto) {
+		Long id = dto.id();
+		
+		return courseRepository.findById(id)
+				.map((val) -> {
+					val.setName(dto.name());
+					
+					Course course = saveInternal(val);
+					return courseMapper.toCourseView(course);
+				})
+				.orElseThrow(() -> new EntityNotFoundException("course not found"));
 	}
 	
 	public void deleteById(Long id) {
-    	if (courseRepository.existsById(id)) {
-    		courseRepository.deleteById(id);
-    	}
+		Course course = courseRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("course not found"));
+		
+		courseRepository.delete(course);
     }
     
     public void deleteAll() {
     	courseRepository.deleteAllInBatch();
     }
+    
+    private Course saveInternal(Course course) {
+		course = courseRepository.save(course);
+		return course;
+	}
 }

@@ -5,12 +5,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.projeto.professorallocationabner.models.dtos.AllocationDto;
+import com.projeto.professorallocationabner.models.dtos.AllocationDTO;
 import com.projeto.professorallocationabner.models.dtos.AllocationView;
 import com.projeto.professorallocationabner.models.entities.Allocation;
 import com.projeto.professorallocationabner.models.entities.Course;
 import com.projeto.professorallocationabner.models.entities.Professor;
-import com.projeto.professorallocationabner.models.exceptions.NotFound;
 import com.projeto.professorallocationabner.models.mappers.AllocationMapper;
 import com.projeto.professorallocationabner.models.repositories.AllocationRepository;
 
@@ -35,7 +34,7 @@ public class AllocationService {
 		return allocationRepository
 				.findById(id)
 				.map(allocationMapper::toAllocationView)
-				.orElseThrow(() -> new NotFound("allocation not found"));
+				.orElseThrow(() -> new EntityNotFoundException("allocation not found"));
 	}
 
 	public Page<AllocationView> findByProfessor(Long professorId, Pageable pageable) {
@@ -50,21 +49,21 @@ public class AllocationService {
 				.map(allocationMapper::toAllocationView);
 	}
 
-	public AllocationView save(AllocationDto dto) {
+	public AllocationView save(AllocationDTO dto) {
 		Allocation allocation = allocationMapper.toAllocation(dto);
 		allocation = saveInternal(allocation);
 		return allocationMapper
 				.toAllocationView(allocation);
 	}
 
-	public AllocationView update(Long id, AllocationDto dto) {
+	public AllocationView update(Long id, AllocationDTO dto) {
 		return allocationRepository.findById(id).map((val) -> {
 			Allocation allocation = allocationMapper.toAllocation(dto);
 			allocation = saveInternal(allocation);
 			return allocationMapper
 					.toAllocationView(allocation);
 		})
-		.orElseThrow(() -> new NotFound("allocation not found"));
+		.orElseThrow(() -> new EntityNotFoundException("allocation not found"));
 	}
 
 	public void deleteById(Long id) {
@@ -85,7 +84,7 @@ public class AllocationService {
 
 			Professor professor = professorService.findById(allocation.getProfessorId());
 			allocation.setProfessor(professor);
-
+			
 			Course course = courseService.findById(allocation.getCourseId());
 			allocation.setCourse(course);
 

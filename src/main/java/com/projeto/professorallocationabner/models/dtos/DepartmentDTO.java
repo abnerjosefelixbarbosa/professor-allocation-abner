@@ -1,6 +1,6 @@
 package com.projeto.professorallocationabner.models.dtos;
 
-public record DepartmantDTO(
+public record DepartmentDTO(
 		Long id,	
 		String name	
 ) {}
