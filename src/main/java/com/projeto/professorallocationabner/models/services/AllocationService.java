@@ -56,12 +56,13 @@ public class AllocationService {
 				.toAllocationView(allocation);
 	}
 
-	public AllocationView update(Long id, AllocationDTO dto) {
+	public AllocationView update(AllocationDTO dto) {
+		Long id = dto.id();
+		
 		return allocationRepository.findById(id).map((val) -> {
 			Allocation allocation = allocationMapper.toAllocation(dto);
 			allocation = saveInternal(allocation);
-			return allocationMapper
-					.toAllocationView(allocation);
+			return allocationMapper.toAllocationView(allocation);
 		})
 		.orElseThrow(() -> new EntityNotFoundException("allocation not found"));
 	}

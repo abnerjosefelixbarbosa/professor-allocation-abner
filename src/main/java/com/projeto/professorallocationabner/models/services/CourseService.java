@@ -41,14 +41,12 @@ public class CourseService {
 	public CourseView update(CourseDTO dto) {
 		Long id = dto.id();
 		
-		return courseRepository.findById(id)
-				.map((val) -> {
-					val.setName(dto.name());
-					
-					Course course = saveInternal(val);
-					return courseMapper.toCourseView(course);
-				})
-				.orElseThrow(() -> new EntityNotFoundException("course not found"));
+		return courseRepository.findById(id).map((val) -> {
+			Course course = courseMapper.toCourse(dto);
+			course = saveInternal(course);
+			return courseMapper.toCourseView(course);
+		})
+	    .orElseThrow(() -> new EntityNotFoundException("course not found"));
 	}
 	
 	public void deleteById(Long id) {
