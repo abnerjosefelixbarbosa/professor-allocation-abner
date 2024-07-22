@@ -1,7 +1,7 @@
 package com.projeto.professorallocationabner.controllers;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projeto.professorallocationabner.models.entities.Course;
+import com.projeto.professorallocationabner.models.dtos.CourseDTO;
+import com.projeto.professorallocationabner.models.dtos.CourseView;
 import com.projeto.professorallocationabner.models.services.CourseService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,59 +29,43 @@ public class CourseController {
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<List<Course>> findAll() {
-	    List<Course> courses = courseService.findAll();
-	    return new ResponseEntity<>(courses, HttpStatus.OK);
+	public ResponseEntity<Page<CourseView>> findAll(Pageable pageable) {
+		Page<CourseView> page = courseService.findAll(pageable);
+	    return ResponseEntity.status(201).body(page);
 	}
 
-	@GetMapping(path = "/{course_id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Course> findById(@PathVariable(name = "course_id") Long id) {
-		Course course = courseService.findById(id);
-		if (course == null)
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		else
-			return new ResponseEntity<>(course, HttpStatus.OK);
+	public ResponseEntity<CourseView> findById(@PathVariable(name = "id") Long id) {
+		CourseView view = courseService.findById(id);
+		return ResponseEntity.status(200).body(view);
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Course> save(@RequestBody Course course) {
-	    try {
-	    	course = courseService.save(course);
-	        return new ResponseEntity<>(course, HttpStatus.CREATED);
-	    } catch (Exception e) {
-	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	    }
+	public ResponseEntity<CourseView> save(@RequestBody CourseDTO dto) {
+		CourseView view = courseService.save(dto);
+	    return ResponseEntity.status(201).body(view);
 	}
 	
-	@PutMapping(path = "/{course_id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Course> update(@PathVariable(name = "course_id") Long id, @RequestBody Course course) {
-		course.setId(id);
-	    try {
-	    	course = courseService.update(course);
-	        if (course == null) {
-	            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	        } else {
-	            return new ResponseEntity<>(course, HttpStatus.OK);
-	        }
-	    } catch (Exception e) {
-	        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	    }
+	public ResponseEntity<CourseView> update(@PathVariable(name = "id") Long id, @RequestBody CourseDTO dto) {
+		CourseView view = courseService.update(dto);
+	    return ResponseEntity.status(200).body(view);
 	}
 	
-	@DeleteMapping(path = "/{course_id}")
+	@DeleteMapping(path = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<Void> deleteById(@PathVariable(name = "course_id") Long id) {
+	public ResponseEntity<Void> deleteById(@PathVariable(name = "id") Long id) {
 	    courseService.deleteById(id);
-	    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	    return ResponseEntity.status(204).body(null);
 	}
 	
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> deleteAll() {
 		courseService.deleteAll();
-	    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	    return ResponseEntity.status(204).body(null);
 	}
 }

@@ -25,7 +25,7 @@ public class CourseService {
 				.map(courseMapper::toCourseView);
 	}
 
-	public CourseView findCourseViewById(Long id) {
+	public CourseView findById(Long id) {
 		return courseRepository
 				.findById(id)
 				.map(courseMapper::toCourseView)
