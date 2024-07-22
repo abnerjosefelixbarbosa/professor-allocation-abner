@@ -1,11 +1,14 @@
 package com.projeto.professorallocationabner.models.services;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.projeto.professorallocationabner.models.dtos.ProfessorDTO;
+import com.projeto.professorallocationabner.models.dtos.ProfessorView;
 import com.projeto.professorallocationabner.models.entities.Department;
 import com.projeto.professorallocationabner.models.entities.Professor;
+import com.projeto.professorallocationabner.models.mappers.ProfessorMapper;
 import com.projeto.professorallocationabner.models.repositories.ProfessorRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -16,49 +19,69 @@ import lombok.RequiredArgsConstructor;
 public class ProfessorService {
 	private final ProfessorRepository professorRepository;
 	private final DepartmentService departmentService;
+	private final ProfessorMapper professorMapper;
 
-	public List<Professor> findAll() {
-		return professorRepository.findAll();
+	public Page<ProfessorView> findAll(Pageable pageable) {
+		return professorRepository
+				.findAll(pageable)
+				.map(professorMapper::toProfessorView);
 	}
 
-	public Professor findById(Long id) {
+	public ProfessorView findById(Long id) {
 		return professorRepository
-				.findById(id).orElseThrow(() -> new EntityNotFoundException("professor not found"));
+				.findById(id)
+				.map(professorMapper::toProfessorView)
+				.orElseThrow(() -> new EntityNotFoundException("professor not found"));
 	}
 	
-	public List<Professor> findByDepartment(Long departmentId) {
-		return professorRepository.findByDepartmentId(departmentId);
+	public Professor findByProfessorId(Long professorId) {
+		return professorRepository
+				.findById(professorId)
+				.orElseThrow(() -> new EntityNotFoundException("professor not found"));
+	}
+	
+	public Page<ProfessorView> findByDepartment(Long departmentId, Pageable pageable) {
+		return professorRepository
+				.findByDepartmentId(departmentId, pageable)
+				.map(professorMapper::toProfessorView);
 	}
 
-	public Professor save(Professor professor) {
-		return saveInternal(professor);
+	public ProfessorView save(ProfessorDTO dto) {
+		Professor professor = professorMapper.toProfessor(dto);
+		professor = saveInternal(professor);
+		return professorMapper.toProfessorView(professor);
 	}
 
-	public Professor update(Professor professor) {
-		Long id = professor.getId();
-		if (id != null && professorRepository.existsById(id)) {
-			return saveInternal(professor);
-		} else {
-			return null;
-		}
-	}
-
-	private Professor saveInternal(Professor professor) {
-		professor = professorRepository.save(professor);
+	public ProfessorView update(ProfessorDTO dto) {
+		Long id = dto.id();
 		
-		Department department = departmentService.findById(professor.getDepartmentId());
-		professor.setDepartment(department);
-		
-		return professor;
+		return professorRepository
+				.findById(id)
+				.map((val) -> {
+					Professor professor = professorMapper.toProfessor(dto);
+					professor = saveInternal(professor);
+					return professorMapper.toProfessorView(professor);
+				})
+				.orElseThrow(() -> new EntityNotFoundException("professor not found"));
 	}
 	
 	public void deleteById(Long id) {
-    	if (professorRepository.existsById(id)) {
-    		professorRepository.deleteById(id);
-    	}
+		Professor professor = professorRepository
+				.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("professor not found"));
+		professorRepository.delete(professor);
     }
     
     public void deleteAll() {
     	professorRepository.deleteAllInBatch();
     }
+	
+	private Professor saveInternal(Professor professor) {
+		professor = professorRepository.save(professor);
+		
+		Department department = departmentService.findDepartmentById(professor.getDepartmentId());
+		professor.setDepartment(department);
+		
+		return professor;
+	}
 }

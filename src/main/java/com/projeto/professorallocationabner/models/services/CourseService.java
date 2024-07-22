@@ -25,10 +25,16 @@ public class CourseService {
 				.map(courseMapper::toCourseView);
 	}
 
-	public CourseView findById(Long id) {
+	public CourseView findCourseViewById(Long id) {
 		return courseRepository
 				.findById(id)
 				.map(courseMapper::toCourseView)
+				.orElseThrow(() -> new EntityNotFoundException("course not found"));
+	}
+	
+	public Course findCourseById(Long id) {
+		return courseRepository
+				.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("course not found"));
 	}
 

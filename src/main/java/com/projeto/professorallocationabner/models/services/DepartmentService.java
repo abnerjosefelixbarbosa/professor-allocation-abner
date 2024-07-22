@@ -1,56 +1,78 @@
 package com.projeto.professorallocationabner.models.services;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.projeto.professorallocationabner.models.dtos.DepartmentDTO;
+import com.projeto.professorallocationabner.models.dtos.DepartmentView;
 import com.projeto.professorallocationabner.models.entities.Department;
+import com.projeto.professorallocationabner.models.mappers.DepartmentMapper;
 import com.projeto.professorallocationabner.models.repositories.DepartmentRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class DepartmentService {
 	private final DepartmentRepository departmentRepository;
+	private final DepartmentMapper departmentMapper;
 	
-	public List<Department> findAll() {
-		return departmentRepository.findAll();
+	public Page<DepartmentView> findAll(Pageable pageable) {
+		return departmentRepository
+				.findAll(pageable)
+				.map(departmentMapper::toDepartmentView);
 	}
 	
-	public List<Department> findByNameIgnoreCase(String name) {
-		return departmentRepository.findByNameIgnoreCase(name);
+	public Page<DepartmentView> findByNameIgnoreCase(String name, Pageable pageable) {
+		return departmentRepository
+				.findByNameIgnoreCase(name, pageable)
+				.map(departmentMapper::toDepartmentView);
 	}
 
-	public Department findById(Long id) {
-		return departmentRepository.findById(id).orElse(null);
+	public DepartmentView findById(Long id) {
+		return departmentRepository.findById(id)
+				.map(departmentMapper::toDepartmentView)
+				.orElseThrow(() -> new EntityNotFoundException("department not found"));
+	}
+	
+	public Department findDepartmentById(Long id) {
+		return departmentRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("department not found"));
 	}
 
-	public Department save(Department department) {
-		return saveInternal(department);
+	public DepartmentView save(DepartmentDTO dto) {
+		Department department = departmentMapper.toDepartment(dto);
+		department = saveInternal(department); 
+		return departmentMapper.toDepartmentView(department);
 	}
 
-	public Department update(Department department) {
-		Long id = department.getId();
-		if (id != null && departmentRepository.existsById(id)) {
-			return saveInternal(department);
-		} else {
-			return null;
-		}
-	}
-
-	private Department saveInternal(Department department) {
-		department = departmentRepository.save(department);
-		return department;
+	public DepartmentView update(DepartmentDTO dto) {
+		Long id = dto.id();
+		
+		return departmentRepository.findById(id)
+				.map((val) -> {
+					Department department = departmentMapper.toDepartment(dto); 
+					department = saveInternal(department);
+					return departmentMapper.toDepartmentView(department);
+				})
+				.orElseThrow(() -> new EntityNotFoundException("department not found"));
 	}
 	
 	public void deleteById(Long id) {
-    	if (departmentRepository.existsById(id)) {
-    		departmentRepository.deleteById(id);
-    	}
+		Department department = departmentRepository
+				.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("department not found"));
+		departmentRepository.delete(department);
     }
     
     public void deleteAll() {
     	departmentRepository.deleteAllInBatch();
     }
+    
+    private Department saveInternal(Department department) {
+		department = departmentRepository.save(department);
+		return department;
+	}
 }

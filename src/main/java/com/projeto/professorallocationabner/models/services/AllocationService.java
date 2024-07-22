@@ -83,10 +83,10 @@ public class AllocationService {
 		} else {
 			allocation = allocationRepository.save(allocation);
 
-			Professor professor = professorService.findById(allocation.getProfessorId());
+			Professor professor = professorService.findByProfessorId(allocation.getProfessorId());
 			allocation.setProfessor(professor);
 			
-			Course course = courseService.findById(allocation.getCourseId());
+			Course course = courseService.findCourseById(allocation.getCourseId());
 			allocation.setCourse(course);
 
 			return allocation;
