@@ -4,5 +4,5 @@ public record ProfessorView(
 		Long id,
 		String name,
 		String cpf,
-		Long departmentId
+		DepartmentView department
 ) {}

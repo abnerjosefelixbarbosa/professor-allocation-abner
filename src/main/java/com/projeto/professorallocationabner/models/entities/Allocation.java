@@ -34,22 +34,18 @@ public class Allocation implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "day", nullable = false)
-	private DayOfWeek day;	
+	@Column(name = "day_week", nullable = false)
+	private DayOfWeek dayOfWeek;	
 	@Temporal(TemporalType.TIME)
-	@Column(name = "start", nullable = false)
+	@Column(name = "start_hour", nullable = false)
 	private Date startHour;	
 	@Temporal(TemporalType.TIME)
-	@Column(name = "end", nullable = false)
+	@Column(name = "end_hour", nullable = false)
 	private Date endHour;	
-	@Column(name = "course_id", nullable = false)
-	private Long courseId;	
-	@Column(name = "professor_id", nullable = false)
-	private Long professorId;	
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "professor_id", nullable = false, insertable = false, updatable = false)
+	@ManyToOne
+	@JoinColumn(name = "professor_id", nullable = false)
 	private Professor professor;	
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "course_id", nullable = false, insertable = false, updatable = false)
+	@ManyToOne
+	@JoinColumn(name = "course_id", nullable = false)
 	private Course course;
 }

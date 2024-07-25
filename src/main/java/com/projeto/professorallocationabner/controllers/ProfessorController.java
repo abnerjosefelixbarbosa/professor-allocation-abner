@@ -50,8 +50,7 @@ public class ProfessorController {
 
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<ProfessorView> update(@PathVariable(name = "id") Long id,
-			@RequestBody ProfessorDTO dto) {
+	public ResponseEntity<ProfessorView> update(@PathVariable(name = "id") Long id, @RequestBody ProfessorDTO dto) {
 		ProfessorView view = professorService.update(dto);
 		return ResponseEntity.status(200).body(view);
 	}

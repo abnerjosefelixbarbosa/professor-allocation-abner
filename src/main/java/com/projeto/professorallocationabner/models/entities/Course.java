@@ -3,9 +3,6 @@ package com.projeto.professorallocationabner.models.entities;
 import java.io.Serializable;
 import java.util.List;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,7 +29,6 @@ public class Course implements Serializable {
 	private Long id;	
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;	
-	@OnDelete(action = OnDeleteAction.CASCADE)
 	@OneToMany(mappedBy = "course")
 	private List<Allocation> allocations;
 }

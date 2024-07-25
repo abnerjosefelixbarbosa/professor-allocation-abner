@@ -26,12 +26,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CourseController {
 	private final CourseService courseService;
-	
+
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Page<CourseView>> findAll(Pageable pageable) {
 		Page<CourseView> page = courseService.findAll(pageable);
-	    return ResponseEntity.status(201).body(page);
+		return ResponseEntity.status(201).body(page);
 	}
 
 	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,32 +40,32 @@ public class CourseController {
 		CourseView view = courseService.findById(id);
 		return ResponseEntity.status(200).body(view);
 	}
-	
+
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<CourseView> save(@RequestBody CourseDTO dto) {
 		CourseView view = courseService.save(dto);
-	    return ResponseEntity.status(201).body(view);
+		return ResponseEntity.status(201).body(view);
 	}
-	
+
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<CourseView> update(@PathVariable(name = "id") Long id, @RequestBody CourseDTO dto) {
 		CourseView view = courseService.update(dto);
-	    return ResponseEntity.status(200).body(view);
+		return ResponseEntity.status(200).body(view);
 	}
-	
+
 	@DeleteMapping(path = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> deleteById(@PathVariable(name = "id") Long id) {
-	    courseService.deleteById(id);
-	    return ResponseEntity.status(204).body(null);
+		courseService.deleteById(id);
+		return ResponseEntity.status(204).body(null);
 	}
-	
+
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> deleteAll() {
 		courseService.deleteAll();
-	    return ResponseEntity.status(204).body(null);
+		return ResponseEntity.status(204).body(null);
 	}
 }

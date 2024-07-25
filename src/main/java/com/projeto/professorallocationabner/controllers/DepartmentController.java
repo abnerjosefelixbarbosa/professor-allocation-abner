@@ -64,7 +64,7 @@ public class DepartmentController {
 		DepartmentView view = departmentService.update(dto);
 		return ResponseEntity.status(200).body(view);
 	}
-	
+
 	@DeleteMapping(path = "/{department_id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> deleteById(@PathVariable(name = "department_id") Long id) {

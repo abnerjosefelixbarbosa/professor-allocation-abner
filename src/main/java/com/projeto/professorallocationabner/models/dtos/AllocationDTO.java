@@ -17,6 +17,6 @@ public record AllocationDTO(
         @JsonFormat(pattern = "HH:mmZ")
         @Temporal(TemporalType.TIME)
         Date endHour,
-        Long courseId,
-        Long professorId
+        CourseDTO course,
+        ProfessorDTO professor
 ) {}

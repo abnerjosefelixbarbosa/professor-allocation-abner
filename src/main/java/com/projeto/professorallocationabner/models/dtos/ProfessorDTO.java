@@ -4,5 +4,5 @@ public record ProfessorDTO(
 		Long id,
 		String name,
 		String cpf,
-		Long departmentId
+		DepartmentDTO department
 ) {}

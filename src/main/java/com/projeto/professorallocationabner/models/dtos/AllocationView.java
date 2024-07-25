@@ -4,7 +4,6 @@ import java.time.DayOfWeek;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.deser.std.DateDeserializers;
@@ -26,8 +25,6 @@ public record AllocationView(
         @JsonDeserialize(using = DateDeserializers.DateDeserializer.class)
         @Temporal(TemporalType.TIME)
         Date endHour,
-        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-        Long courseId,
-        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-        Long professorId
+        CourseView course,
+        ProfessorView professor
 ) {}

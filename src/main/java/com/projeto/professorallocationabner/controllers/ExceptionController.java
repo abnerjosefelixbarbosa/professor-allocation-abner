@@ -30,17 +30,18 @@ public class ExceptionController {
 		});
 		return errors;
 	}
-	
+
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<ExceptionDetails> handleRuntimeException(RuntimeException e, HttpServletRequest request) {
-		ExceptionDetails exceptionDetails = new ExceptionDetails(LocalDateTime.now(), 400, e.getMessage(), 
+		ExceptionDetails exceptionDetails = new ExceptionDetails(LocalDateTime.now(), 400, e.getMessage(),
 				request.getRequestURI());
 		return ResponseEntity.status(400).body(exceptionDetails);
 	}
-	
+
 	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<ExceptionDetails> handleEntityNotFoundExceptionException(EntityNotFoundException e, HttpServletRequest request) {
-		ExceptionDetails exceptionDetails = new ExceptionDetails(LocalDateTime.now(), 404, e.getMessage(), 
+	public ResponseEntity<ExceptionDetails> handleEntityNotFoundExceptionException(EntityNotFoundException e,
+			HttpServletRequest request) {
+		ExceptionDetails exceptionDetails = new ExceptionDetails(LocalDateTime.now(), 404, e.getMessage(),
 				request.getRequestURI());
 		return ResponseEntity.status(400).body(exceptionDetails);
 	}

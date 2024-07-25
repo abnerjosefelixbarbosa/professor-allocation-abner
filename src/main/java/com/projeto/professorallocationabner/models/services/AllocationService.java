@@ -25,46 +25,36 @@ public class AllocationService {
 	private final AllocationMapper allocationMapper;
 
 	public Page<AllocationView> findAll(Pageable pageable) {
-		return allocationRepository
-				.findAll(pageable)
-				.map(allocationMapper::toAllocationView);
+		return allocationRepository.findAll(pageable).map(allocationMapper::toAllocationView);
 	}
 
 	public AllocationView findById(Long id) {
-		return allocationRepository
-				.findById(id)
-				.map(allocationMapper::toAllocationView)
+		return allocationRepository.findById(id).map(allocationMapper::toAllocationView)
 				.orElseThrow(() -> new EntityNotFoundException("allocation not found"));
 	}
 
 	public Page<AllocationView> findByProfessor(Long professorId, Pageable pageable) {
-		return allocationRepository
-				.findByProfessorId(professorId, pageable)
-				.map(allocationMapper::toAllocationView);
+		return allocationRepository.findByProfessorId(professorId, pageable).map(allocationMapper::toAllocationView);
 	}
 
 	public Page<AllocationView> findByCourse(Long courseId, Pageable pageable) {
-		return allocationRepository
-				.findByCourseId(courseId, pageable)
-				.map(allocationMapper::toAllocationView);
+		return allocationRepository.findByCourseId(courseId, pageable).map(allocationMapper::toAllocationView);
 	}
 
 	public AllocationView save(AllocationDTO dto) {
 		Allocation allocation = allocationMapper.toAllocation(dto);
 		allocation = saveInternal(allocation);
-		return allocationMapper
-				.toAllocationView(allocation);
+		return allocationMapper.toAllocationView(allocation);
 	}
 
 	public AllocationView update(AllocationDTO dto) {
 		Long id = dto.id();
-		
+
 		return allocationRepository.findById(id).map((val) -> {
 			Allocation allocation = allocationMapper.toAllocation(dto);
 			allocation = saveInternal(allocation);
 			return allocationMapper.toAllocationView(allocation);
-		})
-		.orElseThrow(() -> new EntityNotFoundException("allocation not found"));
+		}).orElseThrow(() -> new EntityNotFoundException("allocation not found"));
 	}
 
 	public void deleteById(Long id) {
@@ -76,17 +66,17 @@ public class AllocationService {
 	public void deleteAll() {
 		allocationRepository.deleteAllInBatch();
 	}
-	
+
 	private Allocation saveInternal(Allocation allocation) {
 		if (!isEndHourGreaterThanStartHour(allocation) || hasCollision(allocation)) {
 			throw new RuntimeException("allocation invalid");
 		} else {
 			allocation = allocationRepository.save(allocation);
 
-			Professor professor = professorService.findByProfessorId(allocation.getProfessorId());
+			Professor professor = professorService.findByProfessorId(allocation.getProfessor().getId());
 			allocation.setProfessor(professor);
-			
-			Course course = courseService.findCourseById(allocation.getCourseId());
+
+			Course course = courseService.findCourseById(allocation.getCourse().getId());
 			allocation.setCourse(course);
 
 			return allocation;
@@ -97,9 +87,9 @@ public class AllocationService {
 		boolean hasCollision = false;
 		Pageable pageable = PageRequest.ofSize(20);
 
-		Page<Allocation> allocations = allocationRepository
-				.findByProfessorId(allocation.getProfessorId(), pageable);
-		
+		Page<Allocation> allocations = allocationRepository.findByProfessorId(allocation.getProfessor().getId(),
+				pageable);
+
 		for (Allocation val : allocations) {
 			hasCollision = hasCollision(val, allocation);
 			if (hasCollision) {
@@ -111,15 +101,13 @@ public class AllocationService {
 	}
 
 	private boolean isEndHourGreaterThanStartHour(Allocation allocation) {
-		return allocation != null
-				&& allocation.getStartHour() != null 
-				&& allocation.getEndHour() != null
+		return allocation != null && allocation.getStartHour() != null && allocation.getEndHour() != null
 				&& allocation.getEndHour().compareTo(allocation.getStartHour()) > 0;
 	}
 
 	private boolean hasCollision(Allocation currentAllocation, Allocation newAllocation) {
 		return !currentAllocation.getId().equals(newAllocation.getId())
-				&& currentAllocation.getDay() == newAllocation.getDay()
+				&& currentAllocation.getDayOfWeek() == newAllocation.getDayOfWeek()
 				&& currentAllocation.getStartHour().compareTo(newAllocation.getEndHour()) < 0
 				&& newAllocation.getStartHour().compareTo(currentAllocation.getEndHour()) < 0;
 	}

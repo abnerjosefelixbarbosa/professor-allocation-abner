@@ -51,7 +51,7 @@ public class AllocationController {
 
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<AllocationView> update(@PathVariable(name = "id") Long id, 
+	public ResponseEntity<AllocationView> update(@PathVariable(name = "id") Long id,
 			@RequestBody @Valid AllocationDTO dto) {
 		AllocationView view = allocationService.update(dto);
 		return ResponseEntity.status(200).body(view);

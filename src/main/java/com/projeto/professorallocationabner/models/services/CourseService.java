@@ -20,22 +20,16 @@ public class CourseService {
 	private final CourseMapper courseMapper;
 
 	public Page<CourseView> findAll(Pageable pageable) {
-		return courseRepository
-				.findAll(pageable)
-				.map(courseMapper::toCourseView);
+		return courseRepository.findAll(pageable).map(courseMapper::toCourseView);
 	}
 
 	public CourseView findById(Long id) {
-		return courseRepository
-				.findById(id)
-				.map(courseMapper::toCourseView)
+		return courseRepository.findById(id).map(courseMapper::toCourseView)
 				.orElseThrow(() -> new EntityNotFoundException("course not found"));
 	}
-	
+
 	public Course findCourseById(Long id) {
-		return courseRepository
-				.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("course not found"));
+		return courseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("course not found"));
 	}
 
 	public CourseView save(CourseDTO dto) {
@@ -46,27 +40,26 @@ public class CourseService {
 
 	public CourseView update(CourseDTO dto) {
 		Long id = dto.id();
-		
+
 		return courseRepository.findById(id).map((val) -> {
 			Course course = courseMapper.toCourse(dto);
 			course = saveInternal(course);
 			return courseMapper.toCourseView(course);
-		})
-	    .orElseThrow(() -> new EntityNotFoundException("course not found"));
+		}).orElseThrow(() -> new EntityNotFoundException("course not found"));
 	}
-	
+
 	public void deleteById(Long id) {
 		Course course = courseRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("course not found"));
-		
+
 		courseRepository.delete(course);
-    }
-    
-    public void deleteAll() {
-    	courseRepository.deleteAllInBatch();
-    }
-    
-    private Course saveInternal(Course course) {
+	}
+
+	public void deleteAll() {
+		courseRepository.deleteAllInBatch();
+	}
+
+	private Course saveInternal(Course course) {
 		course = courseRepository.save(course);
 		return course;
 	}

@@ -3,9 +3,6 @@ package com.projeto.professorallocationabner.models.entities;
 import java.io.Serializable;
 import java.util.List;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,13 +33,9 @@ public class Professor implements Serializable {
 	private String name;
 	@Column(name = "cpf", unique = true, nullable = false, length = 14)
 	private String cpf;
-	@Column(name = "department_id", nullable = false)
-	private Long departmentId;
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "department_id", nullable = false, insertable = false, updatable = false)
+	@ManyToOne
+	@JoinColumn(name = "department_id", nullable = false)
 	private Department department;
-	@OnDelete(action = OnDeleteAction.CASCADE)
 	@OneToMany(mappedBy = "professor")
 	private List<Allocation> allocations;
 }
