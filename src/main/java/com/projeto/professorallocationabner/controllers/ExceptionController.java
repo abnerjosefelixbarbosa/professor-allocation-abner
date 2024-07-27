@@ -43,6 +43,6 @@ public class ExceptionController {
 			HttpServletRequest request) {
 		ExceptionDetails exceptionDetails = new ExceptionDetails(LocalDateTime.now(), 404, e.getMessage(),
 				request.getRequestURI());
-		return ResponseEntity.status(400).body(exceptionDetails);
+		return ResponseEntity.status(404).body(exceptionDetails);
 	}
 }

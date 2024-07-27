@@ -9,15 +9,10 @@ import com.projeto.professorallocationabner.models.entities.Department;
 @Component
 public class DepartmentMapper {
 	public Department toDepartment(DepartmentDTO dto) {
-		return Department.builder()
-				.name(dto.name())
-				.build();
+		return Department.builder().name(dto.name()).build();
 	}
 	
 	public DepartmentView toDepartmentView(Department department) {
-		return new DepartmentView(
-				department.getId(),
-				department.getName()
-		);
+		return new DepartmentView(department.getId(),department.getName());
 	}
 }

@@ -1,8 +1,7 @@
 package com.projeto.professorallocationabner.models.dtos;
 
-public record ProfessorDTO(
-		Long id,
-		String name,
-		String cpf,
-		DepartmentDTO department
-) {}
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
+public record ProfessorDTO(@NotNull @NotEmpty String name, @NotNull @NotEmpty String cpf, @NotNull DepartmentDTO department) {
+}

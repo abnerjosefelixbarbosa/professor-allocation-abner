@@ -30,13 +30,13 @@ public class ProfessorService {
 				.orElseThrow(() -> new EntityNotFoundException("professor not found"));
 	}
 
-	public Professor findByProfessorId(Long professorId) {
-		return professorRepository.findById(professorId)
+	public Professor findByProfessorId(Long id) {
+		return professorRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("professor not found"));
 	}
 
-	public Page<ProfessorView> findByDepartment(Long departmentId, Pageable pageable) {
-		return professorRepository.findByDepartmentId(departmentId, pageable).map(professorMapper::toProfessorView);
+	public Page<ProfessorView> findByDepartment(Long id, Pageable pageable) {
+		return professorRepository.findByDepartmentId(id, pageable).map(professorMapper::toProfessorView);
 	}
 
 	public ProfessorView save(ProfessorDTO dto) {
@@ -45,9 +45,7 @@ public class ProfessorService {
 		return professorMapper.toProfessorView(professor);
 	}
 
-	public ProfessorView update(ProfessorDTO dto) {
-		Long id = dto.id();
-
+	public ProfessorView update(Long id, ProfessorDTO dto) {
 		return professorRepository.findById(id).map((val) -> {
 			Professor professor = professorMapper.toProfessor(dto);
 			professor = saveInternal(professor);

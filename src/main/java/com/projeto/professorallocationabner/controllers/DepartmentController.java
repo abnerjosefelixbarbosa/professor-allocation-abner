@@ -20,6 +20,7 @@ import com.projeto.professorallocationabner.models.dtos.DepartmentDTO;
 import com.projeto.professorallocationabner.models.dtos.DepartmentView;
 import com.projeto.professorallocationabner.models.services.DepartmentService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -37,8 +38,8 @@ public class DepartmentController {
 
 	@GetMapping(path = "/find-by-name", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Page<DepartmentView>> findByNameIgnoreCase(
-			@RequestParam(name = "name", required = false) String name, Pageable pageable) {
+	public ResponseEntity<Page<DepartmentView>> findByNameIgnoreCase(@RequestParam(name = "name") String name,
+			Pageable pageable) {
 		Page<DepartmentView> page = departmentService.findByNameIgnoreCase(name, pageable);
 		return ResponseEntity.status(200).body(page);
 	}
@@ -52,22 +53,21 @@ public class DepartmentController {
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<DepartmentView> save(@RequestBody DepartmentDTO dto) {
+	public ResponseEntity<DepartmentView> save(@RequestBody @Valid DepartmentDTO dto) {
 		DepartmentView view = departmentService.save(dto);
 		return ResponseEntity.status(201).body(view);
 	}
 
-	@PutMapping(path = "/{department_id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<DepartmentView> update(@PathVariable(name = "department_id") Long id,
-			@RequestBody DepartmentDTO dto) {
-		DepartmentView view = departmentService.update(dto);
+	public ResponseEntity<DepartmentView> update(@PathVariable(name = "id") Long id, @Valid @RequestBody DepartmentDTO dto) {
+		DepartmentView view = departmentService.update(id, dto);
 		return ResponseEntity.status(200).body(view);
 	}
 
-	@DeleteMapping(path = "/{department_id}")
+	@DeleteMapping(path = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<Void> deleteById(@PathVariable(name = "department_id") Long id) {
+	public ResponseEntity<Void> deleteById(@PathVariable(name = "id") Long id) {
 		departmentService.deleteById(id);
 		return ResponseEntity.status(204).body(null);
 	}

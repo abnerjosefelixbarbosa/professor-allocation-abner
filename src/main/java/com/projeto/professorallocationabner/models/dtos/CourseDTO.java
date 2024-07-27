@@ -1,6 +1,7 @@
 package com.projeto.professorallocationabner.models.dtos;
 
-public record CourseDTO(
-		Long id,
-		String name	
-) {}
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
+public record CourseDTO(@NotNull(message = "name should not be null") @NotEmpty(message = "name should not be empty") String name) {
+}

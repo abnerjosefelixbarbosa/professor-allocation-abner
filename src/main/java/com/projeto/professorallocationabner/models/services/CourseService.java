@@ -34,33 +34,26 @@ public class CourseService {
 
 	public CourseView save(CourseDTO dto) {
 		Course course = courseMapper.toCourse(dto);
-		course = saveInternal(course);
+		course = courseRepository.save(course);
 		return courseMapper.toCourseView(course);
 	}
 
-	public CourseView update(CourseDTO dto) {
-		Long id = dto.id();
-
+	public CourseView update(Long id, CourseDTO dto) {
 		return courseRepository.findById(id).map((val) -> {
-			Course course = courseMapper.toCourse(dto);
-			course = saveInternal(course);
-			return courseMapper.toCourseView(course);
+			val = courseMapper.toCourse(dto);
+			val.setId(id);
+			courseRepository.save(val);
+			return courseMapper.toCourseView(val);
 		}).orElseThrow(() -> new EntityNotFoundException("course not found"));
 	}
 
 	public void deleteById(Long id) {
 		Course course = courseRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("course not found"));
-
 		courseRepository.delete(course);
 	}
 
 	public void deleteAll() {
 		courseRepository.deleteAllInBatch();
-	}
-
-	private Course saveInternal(Course course) {
-		course = courseRepository.save(course);
-		return course;
 	}
 }

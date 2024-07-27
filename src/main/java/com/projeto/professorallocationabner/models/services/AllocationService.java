@@ -33,12 +33,12 @@ public class AllocationService {
 				.orElseThrow(() -> new EntityNotFoundException("allocation not found"));
 	}
 
-	public Page<AllocationView> findByProfessor(Long professorId, Pageable pageable) {
-		return allocationRepository.findByProfessorId(professorId, pageable).map(allocationMapper::toAllocationView);
+	public Page<AllocationView> findByProfessor(Long id, Pageable pageable) {
+		return allocationRepository.findByProfessorId(id, pageable).map(allocationMapper::toAllocationView);
 	}
 
-	public Page<AllocationView> findByCourse(Long courseId, Pageable pageable) {
-		return allocationRepository.findByCourseId(courseId, pageable).map(allocationMapper::toAllocationView);
+	public Page<AllocationView> findByCourse(Long id, Pageable pageable) {
+		return allocationRepository.findByCourseId(id, pageable).map(allocationMapper::toAllocationView);
 	}
 
 	public AllocationView save(AllocationDTO dto) {
@@ -47,9 +47,7 @@ public class AllocationService {
 		return allocationMapper.toAllocationView(allocation);
 	}
 
-	public AllocationView update(AllocationDTO dto) {
-		Long id = dto.id();
-
+	public AllocationView update(Long id, AllocationDTO dto) {
 		return allocationRepository.findById(id).map((val) -> {
 			Allocation allocation = allocationMapper.toAllocation(dto);
 			allocation = saveInternal(allocation);

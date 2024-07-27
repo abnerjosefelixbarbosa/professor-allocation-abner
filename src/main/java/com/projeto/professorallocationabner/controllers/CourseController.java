@@ -19,6 +19,7 @@ import com.projeto.professorallocationabner.models.dtos.CourseDTO;
 import com.projeto.professorallocationabner.models.dtos.CourseView;
 import com.projeto.professorallocationabner.models.services.CourseService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -43,15 +44,15 @@ public class CourseController {
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<CourseView> save(@RequestBody CourseDTO dto) {
+	public ResponseEntity<CourseView> save(@RequestBody @Valid CourseDTO dto) {
 		CourseView view = courseService.save(dto);
 		return ResponseEntity.status(201).body(view);
 	}
 
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<CourseView> update(@PathVariable(name = "id") Long id, @RequestBody CourseDTO dto) {
-		CourseView view = courseService.update(dto);
+	public ResponseEntity<CourseView> update(@PathVariable(name = "id") Long id, @Valid @RequestBody CourseDTO dto) {
+		CourseView view = courseService.update(id, dto);
 		return ResponseEntity.status(200).body(view);
 	}
 

@@ -10,15 +10,10 @@ import com.projeto.professorallocationabner.models.entities.Course;
 public class CourseMapper {
 
 	public Course toCourse(CourseDTO dto) {
-		return Course.builder()
-				.name(dto.name())
-				.build();
+		return Course.builder().name(dto.name()).build();
 	}
-	
+
 	public CourseView toCourseView(Course course) {
-		return new CourseView(
-				course.getId(),
-				course.getName()
-		);
+		return new CourseView(course.getId(), course.getName());
 	}
 }

@@ -53,7 +53,7 @@ public class AllocationController {
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<AllocationView> update(@PathVariable(name = "id") Long id,
 			@RequestBody @Valid AllocationDTO dto) {
-		AllocationView view = allocationService.update(dto);
+		AllocationView view = allocationService.update(id, dto);
 		return ResponseEntity.status(200).body(view);
 	}
 

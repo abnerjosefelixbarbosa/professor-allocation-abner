@@ -38,17 +38,16 @@ public class DepartmentService {
 
 	public DepartmentView save(DepartmentDTO dto) {
 		Department department = departmentMapper.toDepartment(dto);
-		department = saveInternal(department);
+		department = departmentRepository.save(department);
 		return departmentMapper.toDepartmentView(department);
 	}
 
-	public DepartmentView update(DepartmentDTO dto) {
-		Long id = dto.id();
-
+	public DepartmentView update(Long id, DepartmentDTO dto) {
 		return departmentRepository.findById(id).map((val) -> {
-			Department department = departmentMapper.toDepartment(dto);
-			department = saveInternal(department);
-			return departmentMapper.toDepartmentView(department);
+			val = departmentMapper.toDepartment(dto);
+			val.setId(id);
+			departmentRepository.save(val);
+			return departmentMapper.toDepartmentView(val);
 		}).orElseThrow(() -> new EntityNotFoundException("department not found"));
 	}
 
@@ -60,10 +59,5 @@ public class DepartmentService {
 
 	public void deleteAll() {
 		departmentRepository.deleteAllInBatch();
-	}
-
-	private Department saveInternal(Department department) {
-		department = departmentRepository.save(department);
-		return department;
 	}
 }

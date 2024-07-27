@@ -16,23 +16,22 @@ import com.projeto.professorallocationabner.models.entities.Professor;
 public class AllocationMapper {
 
 	public Allocation toAllocation(AllocationDTO dto) {
-		Course course = Course.builder().id(dto.course().id()).name(dto.course().name()).build();
+		Course course = Course.builder().name(dto.course().name()).build();
 
-		Department department = Department.builder().id(dto.professor().department().id())
-				.name(dto.professor().department().name()).build();
+		Department department = Department.builder().name(dto.professor().department().name()).build();
 
-		Professor professor = Professor.builder().id(dto.professor().id()).name(dto.professor().name())
-				.cpf(dto.professor().cpf()).department(department).build();
+		Professor professor = Professor.builder().name(dto.professor().name()).cpf(dto.professor().cpf())
+				.department(department).build();
 
-		Allocation allocation = Allocation.builder().dayOfWeek(dto.day()).startHour(dto.startHour()).endHour(dto.endHour())
-				.course(course).professor(professor).build();
+		Allocation allocation = Allocation.builder().dayOfWeek(dto.day()).startHour(dto.startHour())
+				.endHour(dto.endHour()).course(course).professor(professor).build();
 
 		return allocation;
 	}
 
 	public AllocationView toAllocationView(Allocation allocation) {
 		CourseView courseView = new CourseView(allocation.getCourse().getId(), allocation.getCourse().getName());
-		
+
 		DepartmentView departmentView = new DepartmentView(allocation.getProfessor().getDepartment().getId(),
 				allocation.getProfessor().getDepartment().getName());
 

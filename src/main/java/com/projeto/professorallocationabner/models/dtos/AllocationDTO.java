@@ -7,16 +7,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotNull;
 
-public record AllocationDTO(
-		Long id,
-        DayOfWeek day,
-        @JsonFormat(pattern = "HH:mmZ")
-        @Temporal(TemporalType.TIME)
-        Date startHour,
-        @JsonFormat(pattern = "HH:mmZ")
-        @Temporal(TemporalType.TIME)
-        Date endHour,
-        CourseDTO course,
-        ProfessorDTO professor
-) {}
+public record AllocationDTO(@NotNull DayOfWeek day,
+		@JsonFormat(pattern = "HH:mm") @Temporal(TemporalType.TIME) @NotNull Date startHour,
+		@JsonFormat(pattern = "HH:mm") @Temporal(TemporalType.TIME) @NotNull Date endHour, @NotNull CourseDTO course,
+		@NotNull ProfessorDTO professor) {
+}
