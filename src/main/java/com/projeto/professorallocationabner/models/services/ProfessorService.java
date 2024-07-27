@@ -40,15 +40,25 @@ public class ProfessorService {
 	}
 
 	public ProfessorView save(ProfessorDTO dto) {
-		Professor professor = professorMapper.toProfessor(dto);
-		professor = saveInternal(professor);
+		Professor professor = professorMapper.toProfessor(null, dto);
+		validateProfessor(professor);
+		
+		Department department = departmentService.findDepartmentById(professor.getDepartment().getId());
+		professor.setDepartment(department);
+		
+		professorRepository.save(professor);
 		return professorMapper.toProfessorView(professor);
 	}
 
 	public ProfessorView update(Long id, ProfessorDTO dto) {
+		Professor professor = professorMapper.toProfessor(id, dto);
+		validateProfessor(professor);
+		
 		return professorRepository.findById(id).map((val) -> {
-			Professor professor = professorMapper.toProfessor(dto);
-			professor = saveInternal(professor);
+			Department department = departmentService.findDepartmentById(professor.getDepartment().getId());
+			professor.setDepartment(department);
+			
+			professorRepository.save(professor);
 			return professorMapper.toProfessorView(professor);
 		}).orElseThrow(() -> new EntityNotFoundException("professor not found"));
 	}
@@ -63,12 +73,10 @@ public class ProfessorService {
 		professorRepository.deleteAllInBatch();
 	}
 
-	private Professor saveInternal(Professor professor) {
-		professor = professorRepository.save(professor);
-
-		Department department = departmentService.findDepartmentById(professor.getDepartment().getId());
-		professor.setDepartment(department);
-
-		return professor;
+	private void validateProfessor(Professor professor) {
+		if (professor.getDepartment().getId() == null)
+			throw new RuntimeException("id should not be null");
+		if (professorRepository.existsByCpf(professor.getCpf()))
+			throw new RuntimeException("cpf should not be exists");
 	}
 }

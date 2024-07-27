@@ -33,15 +33,14 @@ public class CourseService {
 	}
 
 	public CourseView save(CourseDTO dto) {
-		Course course = courseMapper.toCourse(dto);
+		Course course = courseMapper.toCourse(null, dto);
 		course = courseRepository.save(course);
 		return courseMapper.toCourseView(course);
 	}
 
 	public CourseView update(Long id, CourseDTO dto) {
 		return courseRepository.findById(id).map((val) -> {
-			val = courseMapper.toCourse(dto);
-			val.setId(id);
+			val = courseMapper.toCourse(id, dto);
 			courseRepository.save(val);
 			return courseMapper.toCourseView(val);
 		}).orElseThrow(() -> new EntityNotFoundException("course not found"));

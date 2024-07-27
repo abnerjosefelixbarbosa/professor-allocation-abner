@@ -10,4 +10,6 @@ import com.projeto.professorallocationabner.models.entities.Professor;
 @Repository
 public interface ProfessorRepository extends JpaRepository<Professor, Long> {
 	Page<Professor> findByDepartmentId(Long departmentId, Pageable pageable);
+
+	boolean existsByCpf(String cpf);
 }

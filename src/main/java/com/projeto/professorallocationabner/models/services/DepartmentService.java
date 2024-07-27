@@ -37,15 +37,14 @@ public class DepartmentService {
 	}
 
 	public DepartmentView save(DepartmentDTO dto) {
-		Department department = departmentMapper.toDepartment(dto);
+		Department department = departmentMapper.toDepartment(null, dto);
 		department = departmentRepository.save(department);
 		return departmentMapper.toDepartmentView(department);
 	}
 
 	public DepartmentView update(Long id, DepartmentDTO dto) {
 		return departmentRepository.findById(id).map((val) -> {
-			val = departmentMapper.toDepartment(dto);
-			val.setId(id);
+			val = departmentMapper.toDepartment(id, dto);
 			departmentRepository.save(val);
 			return departmentMapper.toDepartmentView(val);
 		}).orElseThrow(() -> new EntityNotFoundException("department not found"));

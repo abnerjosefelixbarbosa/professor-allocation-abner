@@ -15,7 +15,7 @@ import com.projeto.professorallocationabner.models.entities.Professor;
 @Component
 public class AllocationMapper {
 
-	public Allocation toAllocation(AllocationDTO dto) {
+	public Allocation toAllocation(Long id, AllocationDTO dto) {
 		Course course = Course.builder().name(dto.course().name()).build();
 
 		Department department = Department.builder().name(dto.professor().department().name()).build();
@@ -23,10 +23,8 @@ public class AllocationMapper {
 		Professor professor = Professor.builder().name(dto.professor().name()).cpf(dto.professor().cpf())
 				.department(department).build();
 
-		Allocation allocation = Allocation.builder().dayOfWeek(dto.day()).startHour(dto.startHour())
+		return Allocation.builder().id(id).dayOfWeek(dto.day()).startHour(dto.startHour())
 				.endHour(dto.endHour()).course(course).professor(professor).build();
-
-		return allocation;
 	}
 
 	public AllocationView toAllocationView(Allocation allocation) {

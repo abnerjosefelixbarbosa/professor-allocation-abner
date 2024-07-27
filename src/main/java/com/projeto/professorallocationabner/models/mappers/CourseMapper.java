@@ -9,8 +9,8 @@ import com.projeto.professorallocationabner.models.entities.Course;
 @Component
 public class CourseMapper {
 
-	public Course toCourse(CourseDTO dto) {
-		return Course.builder().name(dto.name()).build();
+	public Course toCourse(Long id, CourseDTO dto) {
+		return Course.builder().id(id).name(dto.name()).build();
 	}
 
 	public CourseView toCourseView(Course course) {
