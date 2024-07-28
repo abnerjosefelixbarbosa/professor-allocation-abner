@@ -35,7 +35,7 @@ public class Allocation implements Serializable {
 	private Long id;	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "day_week", nullable = false)
-	private DayOfWeek dayOfWeek;	
+	private DayOfWeek dayWeek;	
 	@Temporal(TemporalType.TIME)
 	@Column(name = "start_hour", nullable = false)
 	private Date startHour;	

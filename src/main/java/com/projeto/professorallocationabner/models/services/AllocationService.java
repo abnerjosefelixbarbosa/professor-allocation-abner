@@ -105,7 +105,7 @@ public class AllocationService {
 
 	private boolean hasCollision(Allocation currentAllocation, Allocation newAllocation) {
 		return !currentAllocation.getId().equals(newAllocation.getId())
-				&& currentAllocation.getDayOfWeek() == newAllocation.getDayOfWeek()
+				&& currentAllocation.getDayWeek() == newAllocation.getDayWeek()
 				&& currentAllocation.getStartHour().compareTo(newAllocation.getEndHour()) < 0
 				&& newAllocation.getStartHour().compareTo(currentAllocation.getEndHour()) < 0;
 	}

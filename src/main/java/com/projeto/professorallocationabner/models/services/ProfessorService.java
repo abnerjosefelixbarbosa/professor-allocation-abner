@@ -57,9 +57,9 @@ public class ProfessorService {
 		return professorRepository.findById(id).map((val) -> {
 			Department department = departmentService.findDepartmentById(professor.getDepartment().getId());
 			professor.setDepartment(department);
-			
-			professorRepository.save(professor);
-			return professorMapper.toProfessorView(professor);
+			val = professor;
+			professorRepository.save(val);
+			return professorMapper.toProfessorView(val);
 		}).orElseThrow(() -> new EntityNotFoundException("professor not found"));
 	}
 

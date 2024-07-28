@@ -23,7 +23,7 @@ public class AllocationMapper {
 		Professor professor = Professor.builder().name(dto.professor().name()).cpf(dto.professor().cpf())
 				.department(department).build();
 
-		return Allocation.builder().id(id).dayOfWeek(dto.day()).startHour(dto.startHour())
+		return Allocation.builder().id(id).dayWeek(dto.day()).startHour(dto.startHour())
 				.endHour(dto.endHour()).course(course).professor(professor).build();
 	}
 
@@ -36,7 +36,7 @@ public class AllocationMapper {
 		ProfessorView professorView = new ProfessorView(allocation.getProfessor().getId(),
 				allocation.getProfessor().getName(), allocation.getProfessor().getCpf(), departmentView);
 
-		AllocationView allocationView = new AllocationView(allocation.getId(), allocation.getDayOfWeek(),
+		AllocationView allocationView = new AllocationView(allocation.getId(), allocation.getDayWeek(),
 				allocation.getStartHour(), allocation.getEndHour(), courseView, professorView);
 
 		return allocationView;

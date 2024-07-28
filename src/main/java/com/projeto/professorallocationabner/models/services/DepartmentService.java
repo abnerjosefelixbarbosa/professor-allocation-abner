@@ -32,19 +32,32 @@ public class DepartmentService {
 				.orElseThrow(() -> new EntityNotFoundException("department not found"));
 	}
 
+	public DepartmentView findByName(String name) {
+		return departmentRepository.findByName(name).map(departmentMapper::toDepartmentView)
+				.orElseThrow(() -> new EntityNotFoundException("department not found"));
+	}
+
 	public Department findDepartmentById(Long id) {
 		return departmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("department not found"));
 	}
 
+	public Department findDepartmentByName(String name) {
+		return departmentRepository.findByName(name)
+				.orElseThrow(() -> new EntityNotFoundException("department not found"));
+	}
+
 	public DepartmentView save(DepartmentDTO dto) {
 		Department department = departmentMapper.toDepartment(null, dto);
+		validate(department);
 		department = departmentRepository.save(department);
 		return departmentMapper.toDepartmentView(department);
 	}
 
 	public DepartmentView update(Long id, DepartmentDTO dto) {
+		Department department = departmentMapper.toDepartment(id, dto);
+		validate(department);
 		return departmentRepository.findById(id).map((val) -> {
-			val = departmentMapper.toDepartment(id, dto);
+			val = department;
 			departmentRepository.save(val);
 			return departmentMapper.toDepartmentView(val);
 		}).orElseThrow(() -> new EntityNotFoundException("department not found"));
@@ -55,8 +68,19 @@ public class DepartmentService {
 				.orElseThrow(() -> new EntityNotFoundException("department not found"));
 		departmentRepository.delete(department);
 	}
+	
+	public void deleteByName(String name) {
+		Department department = departmentRepository.findByName(name)
+				.orElseThrow(() -> new EntityNotFoundException("department not found"));
+		departmentRepository.delete(department);
+	}
 
 	public void deleteAll() {
 		departmentRepository.deleteAllInBatch();
+	}
+
+	private void validate(Department department) {
+		if (departmentRepository.existsByName(department.getName()))
+			throw new RuntimeException("name already exists");
 	}
 }

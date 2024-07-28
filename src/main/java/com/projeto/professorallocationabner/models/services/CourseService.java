@@ -27,20 +27,42 @@ public class CourseService {
 		return courseRepository.findById(id).map(courseMapper::toCourseView)
 				.orElseThrow(() -> new EntityNotFoundException("course not found"));
 	}
+	
+	public CourseView findByName(String name) {
+		return courseRepository.findByName(name).map(courseMapper::toCourseView)
+				.orElseThrow(() -> new EntityNotFoundException("course not found"));
+	}
 
 	public Course findCourseById(Long id) {
 		return courseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("course not found"));
 	}
+	
+	public Course findCourseByName(String name) {
+		return courseRepository.findByName(name).orElseThrow(() -> new EntityNotFoundException("course not found"));
+	}
 
 	public CourseView save(CourseDTO dto) {
-		Course course = courseMapper.toCourse(null, dto);
+		Course course = courseMapper.toCourse(dto);
+		validate(course);
 		course = courseRepository.save(course);
 		return courseMapper.toCourseView(course);
 	}
 
 	public CourseView update(Long id, CourseDTO dto) {
+		Course course = courseMapper.toCourse(dto);
+		validate(course);
 		return courseRepository.findById(id).map((val) -> {
-			val = courseMapper.toCourse(id, dto);
+			val.setName(course.getName());
+			courseRepository.save(val);
+			return courseMapper.toCourseView(val);
+		}).orElseThrow(() -> new EntityNotFoundException("course not found"));
+	}
+	
+	public CourseView update(String name, CourseDTO dto) {
+		Course course = courseMapper.toCourse(dto);
+		validate(course);
+		return courseRepository.findByName(name).map((val) -> {
+			val.setName(course.getName());
 			courseRepository.save(val);
 			return courseMapper.toCourseView(val);
 		}).orElseThrow(() -> new EntityNotFoundException("course not found"));
@@ -51,8 +73,19 @@ public class CourseService {
 				.orElseThrow(() -> new EntityNotFoundException("course not found"));
 		courseRepository.delete(course);
 	}
+	
+	public void deleteByName(String name) {
+		Course course = courseRepository.findByName(name)
+				.orElseThrow(() -> new EntityNotFoundException("course not found"));
+		courseRepository.delete(course);
+	}
 
 	public void deleteAll() {
 		courseRepository.deleteAllInBatch();
+	}
+	
+	private void validate(Course course) {
+		if (courseRepository.existsByName(course.getName()))
+			throw new RuntimeException("name already exists");
 	}
 }
