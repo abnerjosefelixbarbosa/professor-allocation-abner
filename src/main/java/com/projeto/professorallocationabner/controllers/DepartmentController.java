@@ -19,75 +19,77 @@ import com.projeto.professorallocationabner.models.dtos.DepartmentView;
 import com.projeto.professorallocationabner.models.services.DepartmentService;
 
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping(path = "/departments")
-@RequiredArgsConstructor
 public class DepartmentController {
 	private final DepartmentService departmentService;
 
-	@GetMapping("/find-all")
-	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Page<DepartmentView>> findAll(Pageable pageable) {
-		Page<DepartmentView> page = departmentService.findAll(pageable);
-		return ResponseEntity.status(200).body(page);
+	public DepartmentController(DepartmentService departmentService) {
+		this.departmentService = departmentService;
 	}
 
-	@GetMapping("/find-by-name-ignore-case")
+	@GetMapping("/find-all-departments")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Page<DepartmentView>> findByNameIgnoreCase(@RequestParam("name") String name,
+	public ResponseEntity<Page<DepartmentView>> findAllDepartments(Pageable pageable) {
+		Page<DepartmentView> responses = departmentService.findAllDepartments(pageable);
+		return ResponseEntity.status(200).body(responses);
+	}
+
+	@GetMapping("/find-department-by-name-ignore-case")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<Page<DepartmentView>> findDepartmentByNameIgnoreCase(@RequestParam("name") String name,
 			Pageable pageable) {
-		Page<DepartmentView> page = departmentService.findByNameIgnoreCase(name, pageable);
-		return ResponseEntity.status(200).body(page);
+		Page<DepartmentView> responses = departmentService.findDepartmentByNameIgnoreCase(name, pageable);
+		return ResponseEntity.status(200).body(responses);
 	}
 
-	@GetMapping("/find-by-id")
+	@GetMapping("/find-department-by-id")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<DepartmentView> findById(@RequestParam("id") Long id) {
-		DepartmentView view = departmentService.findById(id);
-		return ResponseEntity.status(200).body(view);
+	public ResponseEntity<DepartmentView> findDepartmentById(@RequestParam("id") Long id) {
+		DepartmentView response = departmentService.findDepartmentById(id);
+		return ResponseEntity.status(200).body(response);
 	}
 	
-	@GetMapping("/find-by-name")
+	@GetMapping("/find-department-by-name")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<DepartmentView> findByName(@RequestParam("name") String name) {
-		DepartmentView view = departmentService.findByName(name);
+	public ResponseEntity<DepartmentView> findDepartmentByName(@RequestParam("name") String name) {
+		DepartmentView view = departmentService.findDepartmentByName(name);
 		return ResponseEntity.status(200).body(view);
 	}
 
-	@PostMapping("/save")
+	@PostMapping("/save-department")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<DepartmentView> save(@RequestBody @Valid DepartmentDTO dto) {
-		DepartmentView view = departmentService.save(dto);
+	public ResponseEntity<DepartmentView> saveDepartment(@RequestBody @Valid DepartmentDTO dto) {
+		DepartmentView view = departmentService.saveDepartment(dto);
 		return ResponseEntity.status(201).body(view);
 	}
 
-	@PutMapping("/update-by-id")
+	@PutMapping("/update-department")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<DepartmentView> update(@RequestParam("id") Long id, @Valid @RequestBody DepartmentDTO dto) {
-		DepartmentView view = departmentService.update(id, dto);
+	public ResponseEntity<DepartmentView> updateDepartment(@RequestParam("id") Long id, @Valid @RequestBody DepartmentDTO dto) {
+		DepartmentView view = departmentService.updateDepartment(id, dto);
 		return ResponseEntity.status(200).body(view);
 	}
 
-	@DeleteMapping("/delete-by-id")
+	@DeleteMapping("/delete-department-by-id")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<Void> deleteById(@RequestParam("id") Long id) {
-		departmentService.deleteById(id);
+	public ResponseEntity<Void> deleteDepartmentById(@RequestParam("id") Long id) {
+		departmentService.deleteDepartmentById(id);
 		return ResponseEntity.status(204).body(null);
 	}
 	
-	@DeleteMapping("/delete-by-name")
+	@DeleteMapping("/delete-department-by-name")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<Void> deleteByName(@RequestParam("name") String name) {
-		departmentService.deleteByName(name);
+	public ResponseEntity<Void> deleteDepartmentByName(@RequestParam("name") String name) {
+		departmentService.deleteDepartmentByName(name);
 		return ResponseEntity.status(204).body(null);
 	}
 
-	@DeleteMapping("/delete-all")
+	@DeleteMapping("/delete-all-departments")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<Void> deleteAll() {
-		departmentService.deleteAll();
+	public ResponseEntity<Void> deleteAllDepartments() {
+		departmentService.deleteAllDepartments();
 		return ResponseEntity.status(204).body(null);
 	}
 }

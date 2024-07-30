@@ -11,76 +11,78 @@ import com.projeto.professorallocationabner.models.mappers.DepartmentMapper;
 import com.projeto.professorallocationabner.models.repositories.DepartmentRepository;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class DepartmentService {
 	private final DepartmentRepository departmentRepository;
 	private final DepartmentMapper departmentMapper;
 
-	public Page<DepartmentView> findAll(Pageable pageable) {
+	public DepartmentService(DepartmentRepository departmentRepository, DepartmentMapper departmentMapper) {
+		this.departmentRepository = departmentRepository;
+		this.departmentMapper = departmentMapper;
+	}
+
+	public Page<DepartmentView> findAllDepartments(Pageable pageable) {
 		return departmentRepository.findAll(pageable).map(departmentMapper::toDepartmentView);
 	}
 
-	public Page<DepartmentView> findByNameIgnoreCase(String name, Pageable pageable) {
+	public Page<DepartmentView> findDepartmentByNameIgnoreCase(String name, Pageable pageable) {
 		return departmentRepository.findByNameIgnoreCase(name, pageable).map(departmentMapper::toDepartmentView);
 	}
 
-	public DepartmentView findById(Long id) {
+	public DepartmentView findDepartmentById(Long id) {
 		return departmentRepository.findById(id).map(departmentMapper::toDepartmentView)
 				.orElseThrow(() -> new EntityNotFoundException("department not found"));
 	}
 
-	public DepartmentView findByName(String name) {
+	public DepartmentView findDepartmentByName(String name) {
 		return departmentRepository.findByName(name).map(departmentMapper::toDepartmentView)
 				.orElseThrow(() -> new EntityNotFoundException("department not found"));
 	}
 
-	public Department findDepartmentById(Long id) {
+	public Department getDepartmentById(Long id) {
 		return departmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("department not found"));
 	}
 
-	public Department findDepartmentByName(String name) {
+	public Department getDepartmentByName(String name) {
 		return departmentRepository.findByName(name)
 				.orElseThrow(() -> new EntityNotFoundException("department not found"));
 	}
 
-	public DepartmentView save(DepartmentDTO dto) {
+	public DepartmentView saveDepartment(DepartmentDTO dto) {
 		Department department = departmentMapper.toDepartment(null, dto);
-		validate(department);
+		validateDepartment(department);
 		department = departmentRepository.save(department);
 		return departmentMapper.toDepartmentView(department);
 	}
 
-	public DepartmentView update(Long id, DepartmentDTO dto) {
+	public DepartmentView updateDepartment(Long id, DepartmentDTO dto) {
 		Department department = departmentMapper.toDepartment(id, dto);
-		validate(department);
-		return departmentRepository.findById(id).map((val) -> {
-			val = department;
-			departmentRepository.save(val);
-			return departmentMapper.toDepartmentView(val);
-		}).orElseThrow(() -> new EntityNotFoundException("department not found"));
+		validateDepartment(department);
+		Department response = departmentRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("department not found"));
+		response.setName(department.getName());
+		return departmentMapper.toDepartmentView(response);
 	}
 
-	public void deleteById(Long id) {
+	public void deleteDepartmentById(Long id) {
 		Department department = departmentRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("department not found"));
 		departmentRepository.delete(department);
 	}
-	
-	public void deleteByName(String name) {
+
+	public void deleteDepartmentByName(String name) {
 		Department department = departmentRepository.findByName(name)
 				.orElseThrow(() -> new EntityNotFoundException("department not found"));
 		departmentRepository.delete(department);
 	}
 
-	public void deleteAll() {
+	public void deleteAllDepartments() {
 		departmentRepository.deleteAllInBatch();
 	}
 
-	private void validate(Department department) {
+	private void validateDepartment(Department department) {
 		if (departmentRepository.existsByName(department.getName()))
-			throw new RuntimeException("name already exists");
+			throw new RuntimeException("name exists");
 	}
 }

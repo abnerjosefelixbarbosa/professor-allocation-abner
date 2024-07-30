@@ -43,7 +43,7 @@ public class ProfessorService {
 		Professor professor = professorMapper.toProfessor(null, dto);
 		validateProfessor(professor);
 		
-		Department department = departmentService.findDepartmentById(professor.getDepartment().getId());
+		Department department = departmentService.getDepartmentById(professor.getDepartment().getId());
 		professor.setDepartment(department);
 		
 		professorRepository.save(professor);
@@ -55,7 +55,7 @@ public class ProfessorService {
 		validateProfessor(professor);
 		
 		return professorRepository.findById(id).map((val) -> {
-			Department department = departmentService.findDepartmentById(professor.getDepartment().getId());
+			Department department = departmentService.getDepartmentById(professor.getDepartment().getId());
 			professor.setDepartment(department);
 			val = professor;
 			professorRepository.save(val);

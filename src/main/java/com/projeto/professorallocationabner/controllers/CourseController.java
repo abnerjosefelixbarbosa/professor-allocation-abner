@@ -32,36 +32,36 @@ public class CourseController {
 	@GetMapping("/find-all-courses")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Page<CourseView>> findAllCourses(Pageable pageable) {
-		Page<CourseView> page = courseService.findAllCourses(pageable);
-		return ResponseEntity.status(200).body(page);
+		Page<CourseView> responses = courseService.findAllCourses(pageable);
+		return ResponseEntity.status(200).body(responses);
 	}
 
 	@GetMapping("/find-course-by-id")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<CourseView> findCourseById(@RequestParam("id") Long id) {
-		CourseView view = courseService.findCourseById(id);
-		return ResponseEntity.status(200).body(view);
+		CourseView response = courseService.findCourseById(id);
+		return ResponseEntity.status(200).body(response);
 	}
 	
 	@GetMapping("/find-course-by-name")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<CourseView> findCourseByName(@RequestParam("name") String name) {
-		CourseView view = courseService.findCourseByName(name);
-		return ResponseEntity.status(200).body(view);
+		CourseView response = courseService.findCourseByName(name);
+		return ResponseEntity.status(200).body(response);
 	}
 
 	@PostMapping("/save-course")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<CourseView> saveCourse(@RequestBody @Valid CourseDTO dto) {
-		CourseView view = courseService.saveCourse(dto);
-		return ResponseEntity.status(201).body(view);
+		CourseView response = courseService.saveCourse(dto);
+		return ResponseEntity.status(201).body(response);
 	}
 	
 	@PutMapping("/update-course")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<CourseView> updateCourse(@RequestParam("id") Long id, @Valid @RequestBody CourseDTO dto) {
-		CourseView view = courseService.updateCourse(id, dto);
-		return ResponseEntity.status(200).body(view);
+		CourseView response = courseService.updateCourse(id, dto);
+		return ResponseEntity.status(200).body(response);
 	}
 
 	@DeleteMapping("/delete-course-by-id")

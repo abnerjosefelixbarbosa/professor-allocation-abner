@@ -13,15 +13,21 @@ import com.projeto.professorallocationabner.models.mappers.AllocationMapper;
 import com.projeto.professorallocationabner.models.repositories.AllocationRepository;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class AllocationService {
 	private final AllocationRepository allocationRepository;
 	private final ProfessorService professorService;
 	private final CourseService courseService;
 	private final AllocationMapper allocationMapper;
+	
+	public AllocationService(AllocationRepository allocationRepository, ProfessorService professorService,
+			CourseService courseService, AllocationMapper allocationMapper) {
+		this.allocationRepository = allocationRepository;
+		this.professorService = professorService;
+		this.courseService = courseService;
+		this.allocationMapper = allocationMapper;
+	}
 
 	public Page<AllocationView> findAll(Pageable pageable) {
 		return allocationRepository.findAll(pageable).map(allocationMapper::toAllocationView);
