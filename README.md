@@ -4,42 +4,18 @@
 [![NPM](https://img.shields.io/npm/l/react)](https://github.com/abnerjosefelixbarbosa/professor-allocation-abner/blob/main/LICENSE)
 
 # About
-This API has goal to manage allocation of professors in courses at the educational institution.
 
-# Features
+Backend do app professor allocation
 
-- find all allocations
-- find a allocation
-- save a allocation
-- update a allocation
-- delete a allocation
-- delete all allocations
+# Models
 
-- find all courses
-- find a course
-- save a course
-- update a course
-- delete a course
-- delete all courses
+# Resources
 
-- find all departments
-- find departments by name
-- find a department
-- save a department
-- update a department
-- delete a department
-- delete all departments
-
-- find all professors
-- find a professor
-- save a professor
-- update a professor
-- delete a professor
-- delete all professors
+## Function
 
 # Technologies
 
-## Back end
+## Backend
 - Java 17
 - JPA hibernate
 - Maven
@@ -47,17 +23,19 @@ This API has goal to manage allocation of professors in courses at the education
 - Spring boot
 - Junit
 - Swagger
+- Lombok
 
 # Project Execution
 
-- Clone o repositorio e execute em uma IDE  
+- Clone o repositorio e execute em uma IDE
+- Acesse o [documento da API](http://localhost:8080/swagger-ui/index.html) ou use outra plataforma para testar a API. 
 
 ```bash
 # clone repository
 git clone https://github.com/abnerjosefelixbarbosa/professor-allocation-abner.git
 ```
-# Autor
+# Author
 
 Abner José Felix Barbosa
 
-Linkedin: https://www.linkedin.com/in/abner-jose-feliz-barbosa/
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/abner-jose-feliz-barbosa/)
