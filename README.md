@@ -9,6 +9,8 @@ Backend do app professor allocation
 
 # Models
 
+![professor_allocation_class_diagram drawio](https://github.com/user-attachments/assets/b8d154de-0177-464f-bfbd-20022763b08f)
+
 # Resources
 
 ## Function
