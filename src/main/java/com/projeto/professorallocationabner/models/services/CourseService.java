@@ -11,81 +11,73 @@ import com.projeto.professorallocationabner.models.mappers.CourseMapper;
 import com.projeto.professorallocationabner.models.repositories.CourseRepository;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class CourseService {
 	private final CourseRepository courseRepository;
 	private final CourseMapper courseMapper;
 
-	public Page<CourseView> findAll(Pageable pageable) {
+	public CourseService(CourseRepository courseRepository, CourseMapper courseMapper) {
+		this.courseRepository = courseRepository;
+		this.courseMapper = courseMapper;
+	}
+
+	public Page<CourseView> findAllCourses(Pageable pageable) {
 		return courseRepository.findAll(pageable).map(courseMapper::toCourseView);
 	}
 
-	public CourseView findById(Long id) {
+	public CourseView findCourseById(Long id) {
 		return courseRepository.findById(id).map(courseMapper::toCourseView)
 				.orElseThrow(() -> new EntityNotFoundException("course not found"));
 	}
-	
-	public CourseView findByName(String name) {
+
+	public CourseView findCourseByName(String name) {
 		return courseRepository.findByName(name).map(courseMapper::toCourseView)
 				.orElseThrow(() -> new EntityNotFoundException("course not found"));
 	}
 
-	public Course findCourseById(Long id) {
+	public Course getCourseById(Long id) {
 		return courseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("course not found"));
 	}
-	
-	public Course findCourseByName(String name) {
+
+	public Course getCourseByName(String name) {
 		return courseRepository.findByName(name).orElseThrow(() -> new EntityNotFoundException("course not found"));
 	}
 
-	public CourseView save(CourseDTO dto) {
+	public CourseView saveCourse(CourseDTO dto) {
 		Course course = courseMapper.toCourse(dto);
 		validate(course);
 		course = courseRepository.save(course);
 		return courseMapper.toCourseView(course);
 	}
 
-	public CourseView update(Long id, CourseDTO dto) {
+	public CourseView updateCourse(Long id, CourseDTO dto) {
 		Course course = courseMapper.toCourse(dto);
 		validate(course);
-		return courseRepository.findById(id).map((val) -> {
-			val.setName(course.getName());
-			courseRepository.save(val);
-			return courseMapper.toCourseView(val);
-		}).orElseThrow(() -> new EntityNotFoundException("course not found"));
-	}
-	
-	public CourseView update(String name, CourseDTO dto) {
-		Course course = courseMapper.toCourse(dto);
-		validate(course);
-		return courseRepository.findByName(name).map((val) -> {
-			val.setName(course.getName());
-			courseRepository.save(val);
-			return courseMapper.toCourseView(val);
-		}).orElseThrow(() -> new EntityNotFoundException("course not found"));
+		Course response = courseRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("course not found"));
+		response.setName(course.getName());
+		return courseMapper.toCourseView(response);
 	}
 
-	public void deleteById(Long id) {
+	public void deleteCourseById(Long id) {
 		Course course = courseRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("course not found"));
 		courseRepository.delete(course);
 	}
-	
-	public void deleteByName(String name) {
+
+	public void deleteCourseByName(String name) {
 		Course course = courseRepository.findByName(name)
 				.orElseThrow(() -> new EntityNotFoundException("course not found"));
 		courseRepository.delete(course);
 	}
 
-	public void deleteAll() {
+	public void deleteAllCourses() {
 		courseRepository.deleteAllInBatch();
 	}
-	
+
 	private void validate(Course course) {
 		if (courseRepository.existsByName(course.getName()))
-			throw new RuntimeException("name already exists");
+			throw new RuntimeException("name exists");
 	}
 }

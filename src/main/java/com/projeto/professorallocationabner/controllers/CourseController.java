@@ -19,74 +19,69 @@ import com.projeto.professorallocationabner.models.dtos.CourseView;
 import com.projeto.professorallocationabner.models.services.CourseService;
 
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping(path = "/courses")
-@RequiredArgsConstructor
 public class CourseController {
 	private final CourseService courseService;
-
-	@GetMapping("/find-all")
-	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Page<CourseView>> findAll(Pageable pageable) {
-		Page<CourseView> page = courseService.findAll(pageable);
-		return ResponseEntity.status(201).body(page);
+	
+	public CourseController(CourseService courseService) {
+		this.courseService = courseService;
 	}
 
-	@GetMapping("/find-by-id")
+	@GetMapping("/find-all-courses")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<CourseView> findById(@RequestParam("id") Long id) {
-		CourseView view = courseService.findById(id);
+	public ResponseEntity<Page<CourseView>> findAllCourses(Pageable pageable) {
+		Page<CourseView> page = courseService.findAllCourses(pageable);
+		return ResponseEntity.status(200).body(page);
+	}
+
+	@GetMapping("/find-course-by-id")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<CourseView> findCourseById(@RequestParam("id") Long id) {
+		CourseView view = courseService.findCourseById(id);
 		return ResponseEntity.status(200).body(view);
 	}
 	
-	@GetMapping("/find-by-name")
+	@GetMapping("/find-course-by-name")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<CourseView> findByName(@RequestParam("name") String name) {
-		CourseView view = courseService.findByName(name);
+	public ResponseEntity<CourseView> findCourseByName(@RequestParam("name") String name) {
+		CourseView view = courseService.findCourseByName(name);
 		return ResponseEntity.status(200).body(view);
 	}
 
-	@PostMapping("/save")
+	@PostMapping("/save-course")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<CourseView> save(@RequestBody @Valid CourseDTO dto) {
-		CourseView view = courseService.save(dto);
+	public ResponseEntity<CourseView> saveCourse(@RequestBody @Valid CourseDTO dto) {
+		CourseView view = courseService.saveCourse(dto);
 		return ResponseEntity.status(201).body(view);
 	}
-
-	@PutMapping("/update-by-id")
-	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<CourseView> updateById(@RequestParam("id") Long id, @Valid @RequestBody CourseDTO dto) {
-		CourseView view = courseService.update(id, dto);
-		return ResponseEntity.status(200).body(view);
-	}
 	
-	@PutMapping("/update-by-name")
+	@PutMapping("/update-course")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<CourseView> updateByName(@RequestParam("name") String name, @Valid @RequestBody CourseDTO dto) {
-		CourseView view = courseService.update(name, dto);
+	public ResponseEntity<CourseView> updateCourse(@RequestParam("id") Long id, @Valid @RequestBody CourseDTO dto) {
+		CourseView view = courseService.updateCourse(id, dto);
 		return ResponseEntity.status(200).body(view);
 	}
 
-	@DeleteMapping("delete-by-id")
+	@DeleteMapping("/delete-course-by-id")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<Void> deleteById(@RequestParam("id") Long id) {
-		courseService.deleteById(id);
+	public ResponseEntity<Void> deleteCourseById(@RequestParam("id") Long id) {
+		courseService.deleteCourseById(id);
 		return ResponseEntity.status(204).body(null);
 	}
 	
-	@DeleteMapping("delete-by-name")
+	@DeleteMapping("/delete-course-by-name")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<Void> deleteByName(@RequestParam("name") String name) {
-		courseService.deleteByName(name);
+	public ResponseEntity<Void> deleteCourseByName(@RequestParam("name") String name) {
+		courseService.deleteCourseByName(name);
 		return ResponseEntity.status(204).body(null);
 	}
 
-	@DeleteMapping("delete-all")
+	@DeleteMapping("/delete-all-courses")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<Void> deleteAll() {
-		courseService.deleteAll();
+	public ResponseEntity<Void> deleteAllCourses() {
+		courseService.deleteAllCourses();
 		return ResponseEntity.status(204).body(null);
 	}
 }

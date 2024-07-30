@@ -9,7 +9,6 @@ import com.projeto.professorallocationabner.models.dtos.AllocationDTO;
 import com.projeto.professorallocationabner.models.dtos.AllocationView;
 import com.projeto.professorallocationabner.models.entities.Allocation;
 import com.projeto.professorallocationabner.models.entities.Course;
-import com.projeto.professorallocationabner.models.entities.Professor;
 import com.projeto.professorallocationabner.models.mappers.AllocationMapper;
 import com.projeto.professorallocationabner.models.repositories.AllocationRepository;
 
@@ -71,10 +70,10 @@ public class AllocationService {
 		} else {
 			allocation = allocationRepository.save(allocation);
 
-			Professor professor = professorService.findByProfessorId(allocation.getProfessor().getId());
-			allocation.setProfessor(professor);
+			//Professor professor = professorService.fProfessorId(allocation.getProfessor().getId());
+			//allocation.setProfessor(professor);
 
-			Course course = courseService.findCourseById(allocation.getCourse().getId());
+			Course course = courseService.getCourseById(allocation.getCourse().getId());
 			allocation.setCourse(course);
 
 			return allocation;
