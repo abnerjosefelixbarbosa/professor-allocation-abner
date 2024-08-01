@@ -10,16 +10,15 @@ import com.projeto.professorallocationabner.models.entities.Professor;
 
 @Component
 public class ProfessorMapper {
-	public Professor toProfessor(Long id, ProfessorDTO dto) {
+	public Professor toProfessor(ProfessorDTO dto) {
 		Department department = Department.builder().id(dto.department().id()).name(dto.department().name()).build();
-
-		return Professor.builder().id(id).cpf(dto.cpf()).department(department).name(dto.name()).build();
+		
+		return Professor.builder().id(dto.id()).cpf(dto.cpf()).department(department).name(dto.name()).build();
 	}
 
 	public ProfessorView toProfessorView(Professor professor) {
-		DepartmentView departmentView = new DepartmentView(professor.getId(), professor.getName());
-
-		return new ProfessorView(professor.getId(), professor.getName(), professor.getCpf(),
-				departmentView);
+		DepartmentView departmentView = new DepartmentView(professor.getDepartment().getId(), professor.getDepartment().getName());
+		
+		return new ProfessorView(professor.getId(), professor.getName(), professor.getCpf(), departmentView);
 	}
 }

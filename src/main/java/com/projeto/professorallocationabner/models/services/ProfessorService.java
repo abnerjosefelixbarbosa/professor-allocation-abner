@@ -21,62 +21,69 @@ public class ProfessorService {
 	private final DepartmentService departmentService;
 	private final ProfessorMapper professorMapper;
 
-	public Page<ProfessorView> findAll(Pageable pageable) {
+	public Page<ProfessorView> findAllProfessors(Pageable pageable) {
 		return professorRepository.findAll(pageable).map(professorMapper::toProfessorView);
 	}
 
-	public ProfessorView findById(Long id) {
+	public ProfessorView findProfessorById(Long id) {
 		return professorRepository.findById(id).map(professorMapper::toProfessorView)
 				.orElseThrow(() -> new EntityNotFoundException("professor not found"));
 	}
-
-	public Professor findByProfessorId(Long id) {
-		return professorRepository.findById(id)
+	
+	public ProfessorView findProfessorByName(String name) {
+		return professorRepository.findByName(name).map(professorMapper::toProfessorView)
 				.orElseThrow(() -> new EntityNotFoundException("professor not found"));
 	}
 
-	public Page<ProfessorView> findByDepartment(Long id, Pageable pageable) {
+	public Professor getProfessorById(Long id) {
+		return professorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("professor not found"));
+	}
+
+	public Page<ProfessorView> findAllProfessorsByDepartmentId(Long id, Pageable pageable) {
 		return professorRepository.findByDepartmentId(id, pageable).map(professorMapper::toProfessorView);
 	}
 
-	public ProfessorView save(ProfessorDTO dto) {
-		Professor professor = professorMapper.toProfessor(null, dto);
+	public ProfessorView saveProfessor(ProfessorDTO dto) {
+		Professor professor = professorMapper.toProfessor(dto);
 		validateProfessor(professor);
-		
+
 		Department department = departmentService.getDepartmentById(professor.getDepartment().getId());
 		professor.setDepartment(department);
-		
+
 		professorRepository.save(professor);
 		return professorMapper.toProfessorView(professor);
 	}
 
-	public ProfessorView update(Long id, ProfessorDTO dto) {
-		Professor professor = professorMapper.toProfessor(id, dto);
+	public ProfessorView updateProfessor(Long id, ProfessorDTO dto) {
+		Professor professor = professorMapper.toProfessor(dto);
 		validateProfessor(professor);
-		
-		return professorRepository.findById(id).map((val) -> {
-			Department department = departmentService.getDepartmentById(professor.getDepartment().getId());
-			professor.setDepartment(department);
-			val = professor;
-			professorRepository.save(val);
-			return professorMapper.toProfessorView(val);
-		}).orElseThrow(() -> new EntityNotFoundException("professor not found"));
+
+		Professor response = professorRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("professor not found"));
+		Department department = departmentService.getDepartmentByName(professor.getDepartment().getName());
+		response.setDepartment(department);
+
+		return professorMapper.toProfessorView(response);
 	}
 
-	public void deleteById(Long id) {
+	public void deleteProfessorById(Long id) {
 		Professor professor = professorRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("professor not found"));
 		professorRepository.delete(professor);
 	}
+	
+	public void deleteProfessorByName(String name) {
+		Professor professor = professorRepository.findByName(name)
+				.orElseThrow(() -> new EntityNotFoundException("professor not found"));
+		professorRepository.delete(professor);
+	}
 
-	public void deleteAll() {
+	public void deleteAllProfessors() {
 		professorRepository.deleteAllInBatch();
 	}
 
 	private void validateProfessor(Professor professor) {
-		if (professor.getDepartment().getId() == null)
-			throw new RuntimeException("id should not be null");
 		if (professorRepository.existsByCpf(professor.getCpf()))
-			throw new RuntimeException("cpf should not be exists");
+			throw new RuntimeException("cpf exists");
 	}
 }

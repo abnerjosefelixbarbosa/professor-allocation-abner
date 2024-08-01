@@ -26,10 +26,6 @@ public class DepartmentService {
 		return departmentRepository.findAll(pageable).map(departmentMapper::toDepartmentView);
 	}
 
-	public Page<DepartmentView> findDepartmentByNameIgnoreCase(String name, Pageable pageable) {
-		return departmentRepository.findByNameIgnoreCase(name, pageable).map(departmentMapper::toDepartmentView);
-	}
-
 	public DepartmentView findDepartmentById(Long id) {
 		return departmentRepository.findById(id).map(departmentMapper::toDepartmentView)
 				.orElseThrow(() -> new EntityNotFoundException("department not found"));

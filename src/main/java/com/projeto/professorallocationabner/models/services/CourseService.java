@@ -46,14 +46,14 @@ public class CourseService {
 
 	public CourseView saveCourse(CourseDTO dto) {
 		Course course = courseMapper.toCourse(dto);
-		validate(course);
+		validateCourse(course);
 		course = courseRepository.save(course);
 		return courseMapper.toCourseView(course);
 	}
 
 	public CourseView updateCourse(Long id, CourseDTO dto) {
 		Course course = courseMapper.toCourse(dto);
-		validate(course);
+		validateCourse(course);
 		Course response = courseRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("course not found"));
 		response.setName(course.getName());
@@ -76,7 +76,7 @@ public class CourseService {
 		courseRepository.deleteAllInBatch();
 	}
 
-	private void validate(Course course) {
+	private void validateCourse(Course course) {
 		if (courseRepository.existsByName(course.getName()))
 			throw new RuntimeException("name exists");
 	}

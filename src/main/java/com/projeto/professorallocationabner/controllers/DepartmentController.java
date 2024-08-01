@@ -36,14 +36,6 @@ public class DepartmentController {
 		return ResponseEntity.status(200).body(responses);
 	}
 
-	@GetMapping("/find-department-by-name-ignore-case")
-	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Page<DepartmentView>> findDepartmentByNameIgnoreCase(@RequestParam("name") String name,
-			Pageable pageable) {
-		Page<DepartmentView> responses = departmentService.findDepartmentByNameIgnoreCase(name, pageable);
-		return ResponseEntity.status(200).body(responses);
-	}
-
 	@GetMapping("/find-department-by-id")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<DepartmentView> findDepartmentById(@RequestParam("id") Long id) {
