@@ -9,6 +9,7 @@ import com.projeto.professorallocationabner.models.dtos.AllocationDTO;
 import com.projeto.professorallocationabner.models.dtos.AllocationView;
 import com.projeto.professorallocationabner.models.entities.Allocation;
 import com.projeto.professorallocationabner.models.entities.Course;
+import com.projeto.professorallocationabner.models.entities.Professor;
 import com.projeto.professorallocationabner.models.mappers.AllocationMapper;
 import com.projeto.professorallocationabner.models.repositories.AllocationRepository;
 
@@ -20,7 +21,7 @@ public class AllocationService {
 	private final ProfessorService professorService;
 	private final CourseService courseService;
 	private final AllocationMapper allocationMapper;
-	
+
 	public AllocationService(AllocationRepository allocationRepository, ProfessorService professorService,
 			CourseService courseService, AllocationMapper allocationMapper) {
 		this.allocationRepository = allocationRepository;
@@ -29,61 +30,61 @@ public class AllocationService {
 		this.allocationMapper = allocationMapper;
 	}
 
-	public Page<AllocationView> findAll(Pageable pageable) {
+	public Page<AllocationView> findAllAllocations(Pageable pageable) {
 		return allocationRepository.findAll(pageable).map(allocationMapper::toAllocationView);
 	}
 
-	public AllocationView findById(Long id) {
+	public AllocationView findAllocationById(Long id) {
 		return allocationRepository.findById(id).map(allocationMapper::toAllocationView)
 				.orElseThrow(() -> new EntityNotFoundException("allocation not found"));
 	}
 
-	public Page<AllocationView> findByProfessor(Long id, Pageable pageable) {
-		return allocationRepository.findByProfessorId(id, pageable).map(allocationMapper::toAllocationView);
-	}
+	public AllocationView saveAllocation(AllocationDTO dto) {
+		Allocation allocation = allocationMapper.toAllocation(dto);
+		validadeAllocation(allocation);
 
-	public Page<AllocationView> findByCourse(Long id, Pageable pageable) {
-		return allocationRepository.findByCourseId(id, pageable).map(allocationMapper::toAllocationView);
-	}
+		Professor professor = professorService.getProfessorById(allocation.getProfessor().getId());
+		allocation.setProfessor(professor);
 
-	public AllocationView save(AllocationDTO dto) {
-		Allocation allocation = allocationMapper.toAllocation(null, dto);
-		allocation = saveInternal(allocation);
+		Course course = courseService.getCourseById(allocation.getCourse().getId());
+		allocation.setCourse(course);
+		
+		allocation = allocationRepository.save(allocation);
+		
 		return allocationMapper.toAllocationView(allocation);
 	}
 
-	public AllocationView update(Long id, AllocationDTO dto) {
-		return allocationRepository.findById(id).map((val) -> {
-			Allocation allocation = allocationMapper.toAllocation(id, dto);
-			allocation = saveInternal(allocation);
-			return allocationMapper.toAllocationView(allocation);
-		}).orElseThrow(() -> new EntityNotFoundException("allocation not found"));
+	public AllocationView updateAllocation(Long id, AllocationDTO dto) {
+		validadeAllocation(allocationMapper.toAllocation(dto));
+		Allocation allocation = allocationRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("allocation not found"));
+		allocation.setDayWeek(dto.day());
+		allocation.setEndHour(dto.endHour());
+		allocation.setStartHour(dto.startHour());
+		
+		Professor professor = professorService.getProfessorById(allocation.getProfessor().getId());
+		allocation.setProfessor(professor);
+
+		Course course = courseService.getCourseById(allocation.getCourse().getId());
+		allocation.setCourse(course);
+		
+		allocation = allocationRepository.save(allocation);
+		
+		return allocationMapper.toAllocationView(allocation);
 	}
 
-	public void deleteById(Long id) {
+	public void deleteAllocationById(Long id) {
 		Allocation allocation = allocationRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("allocation not found"));
 		allocationRepository.delete(allocation);
 	}
 
-	public void deleteAll() {
+	public void deleteAllAllocations() {
 		allocationRepository.deleteAllInBatch();
 	}
-
-	private Allocation saveInternal(Allocation allocation) {
-		if (!isEndHourGreaterThanStartHour(allocation) || hasCollision(allocation)) {
+	
+	private void validadeAllocation(Allocation allocation) {
+		if (!isEndHourGreaterThanStartHour(allocation) || hasCollision(allocation))
 			throw new RuntimeException("allocation invalid");
-		} else {
-			allocation = allocationRepository.save(allocation);
-
-			//Professor professor = professorService.fProfessorId(allocation.getProfessor().getId());
-			//allocation.setProfessor(professor);
-
-			Course course = courseService.getCourseById(allocation.getCourse().getId());
-			allocation.setCourse(course);
-
-			return allocation;
-		}
 	}
 
 	private boolean hasCollision(Allocation allocation) {

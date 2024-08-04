@@ -3,15 +3,14 @@ package com.projeto.professorallocationabner.controllers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,54 +19,56 @@ import com.projeto.professorallocationabner.models.dtos.AllocationView;
 import com.projeto.professorallocationabner.models.services.AllocationService;
 
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping(path = "/allocations")
-@RequiredArgsConstructor
+@RequestMapping("/allocations")
 public class AllocationController {
 	private final AllocationService allocationService;
 
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public AllocationController(AllocationService allocationService) {
+		this.allocationService = allocationService;
+	}
+
+	@GetMapping("/find-all-allocations")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Page<AllocationView>> findAll(Pageable pageable) {
-		Page<AllocationView> page = allocationService.findAll(pageable);
+	public ResponseEntity<Page<AllocationView>> findAllAllocations(Pageable pageable) {
+		Page<AllocationView> page = allocationService.findAllAllocations(pageable);
 		return ResponseEntity.status(200).body(page);
 	}
 
-	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping("/find-allocation-by-id")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<AllocationView> findById(@PathVariable(name = "id") Long id) {
-		AllocationView view = allocationService.findById(id);
+	public ResponseEntity<AllocationView> findAllocationById(@RequestParam Long id) {
+		AllocationView view = allocationService.findAllocationById(id);
 		return ResponseEntity.status(200).body(view);
 	}
 
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping("/save-allocation")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<AllocationView> save(@RequestBody @Valid AllocationDTO dto) {
-		AllocationView view = allocationService.save(dto);
+	public ResponseEntity<AllocationView> saveAllocation(@RequestBody @Valid AllocationDTO dto) {
+		AllocationView view = allocationService.saveAllocation(dto);
 		return ResponseEntity.status(201).body(view);
 	}
 
-	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping("/update-allocation")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<AllocationView> update(@PathVariable(name = "id") Long id,
+	public ResponseEntity<AllocationView> updateAllocation(@RequestParam Long id,
 			@RequestBody @Valid AllocationDTO dto) {
-		AllocationView view = allocationService.update(id, dto);
+		AllocationView view = allocationService.updateAllocation(id, dto);
 		return ResponseEntity.status(200).body(view);
 	}
 
-	@DeleteMapping(path = "/{id}")
+	@DeleteMapping("/delete-allocation-by-id")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<Void> deleteById(@PathVariable(name = "id") Long id) {
-		allocationService.deleteById(id);
+	public ResponseEntity<Void> deleteAllocationById(@RequestParam Long id) {
+		allocationService.deleteAllocationById(id);
 		return ResponseEntity.status(204).body(null);
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/delete-all-allocations")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<Void> deleteAll() {
-		allocationService.deleteAll();
+	public ResponseEntity<Void> deleteAllAllocations() {
+		allocationService.deleteAllAllocations();
 		return ResponseEntity.status(204).body(null);
 	}
 }
