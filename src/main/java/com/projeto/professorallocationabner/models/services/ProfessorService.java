@@ -26,31 +26,29 @@ public class ProfessorService {
 	}
 
 	public ProfessorView findProfessorById(Long id) {
-		return professorRepository.findById(id).map(professorMapper::toProfessorView)
-				.orElseThrow(() -> new EntityNotFoundException("professor not found"));
+		return professorRepository.findById(id).map(professorMapper::toProfessorView).orElseThrow(() -> new EntityNotFoundException("professor not found"));
 	}
 	
 	public ProfessorView findProfessorByName(String name) {
-		return professorRepository.findByName(name).map(professorMapper::toProfessorView)
-				.orElseThrow(() -> new EntityNotFoundException("professor not found"));
+		return professorRepository.findByName(name).map(professorMapper::toProfessorView).orElseThrow(() -> new EntityNotFoundException("professor not found"));
 	}
 
 	public Professor getProfessorById(Long id) {
 		return professorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("professor not found"));
 	}
-
-	public Page<ProfessorView> findAllProfessorsByDepartmentId(Long id, Pageable pageable) {
-		return professorRepository.findByDepartmentId(id, pageable).map(professorMapper::toProfessorView);
+	
+	public Professor getProfessorByName(String name) {
+		return professorRepository.findByName(name).orElseThrow(() -> new EntityNotFoundException("professor not found"));
 	}
 
 	public ProfessorView saveProfessor(ProfessorDTO dto) {
 		Professor professor = professorMapper.toProfessor(dto);
 		validateProfessor(professor);
 
-		Department department = departmentService.getDepartmentById(professor.getDepartment().getId());
+		Department department = departmentService.getDepartmentByName(professor.getDepartment().getName());
 		professor.setDepartment(department);
-
-		professorRepository.save(professor);
+		professor = professorRepository.save(professor);
+		
 		return professorMapper.toProfessorView(professor);
 	}
 
@@ -58,23 +56,21 @@ public class ProfessorService {
 		Professor professor = professorMapper.toProfessor(dto);
 		validateProfessor(professor);
 
-		Professor response = professorRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("professor not found"));
+		Professor response = professorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("professor not found"));
 		Department department = departmentService.getDepartmentByName(professor.getDepartment().getName());
 		response.setDepartment(department);
+		response = professorRepository.save(response);
 
 		return professorMapper.toProfessorView(response);
 	}
 
 	public void deleteProfessorById(Long id) {
-		Professor professor = professorRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("professor not found"));
+		Professor professor = professorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("professor not found"));
 		professorRepository.delete(professor);
 	}
 	
 	public void deleteProfessorByName(String name) {
-		Professor professor = professorRepository.findByName(name)
-				.orElseThrow(() -> new EntityNotFoundException("professor not found"));
+		Professor professor = professorRepository.findByName(name).orElseThrow(() -> new EntityNotFoundException("professor not found"));
 		professorRepository.delete(professor);
 	}
 

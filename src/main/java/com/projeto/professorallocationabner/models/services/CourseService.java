@@ -27,13 +27,11 @@ public class CourseService {
 	}
 
 	public CourseView findCourseById(Long id) {
-		return courseRepository.findById(id).map(courseMapper::toCourseView)
-				.orElseThrow(() -> new EntityNotFoundException("course not found"));
+		return courseRepository.findById(id).map(courseMapper::toCourseView).orElseThrow(() -> new EntityNotFoundException("course not found"));
 	}
 
 	public CourseView findCourseByName(String name) {
-		return courseRepository.findByName(name).map(courseMapper::toCourseView)
-				.orElseThrow(() -> new EntityNotFoundException("course not found"));
+		return courseRepository.findByName(name).map(courseMapper::toCourseView).orElseThrow(() -> new EntityNotFoundException("course not found"));
 	}
 
 	public Course getCourseById(Long id) {
@@ -47,28 +45,30 @@ public class CourseService {
 	public CourseView saveCourse(CourseDTO dto) {
 		Course course = courseMapper.toCourse(dto);
 		validateCourse(course);
+		
 		course = courseRepository.save(course);
+		
 		return courseMapper.toCourseView(course);
 	}
 
 	public CourseView updateCourse(Long id, CourseDTO dto) {
 		Course course = courseMapper.toCourse(dto);
 		validateCourse(course);
-		Course response = courseRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("course not found"));
+		
+		Course response = courseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("course not found"));
 		response.setName(course.getName());
+		response = courseRepository.save(response);
+		
 		return courseMapper.toCourseView(response);
 	}
 
 	public void deleteCourseById(Long id) {
-		Course course = courseRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("course not found"));
+		Course course = courseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("course not found"));
 		courseRepository.delete(course);
 	}
 
 	public void deleteCourseByName(String name) {
-		Course course = courseRepository.findByName(name)
-				.orElseThrow(() -> new EntityNotFoundException("course not found"));
+		Course course = courseRepository.findByName(name).orElseThrow(() -> new EntityNotFoundException("course not found"));
 		courseRepository.delete(course);
 	}
 

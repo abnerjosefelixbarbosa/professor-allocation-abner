@@ -22,8 +22,7 @@ public class AllocationService {
 	private final CourseService courseService;
 	private final AllocationMapper allocationMapper;
 
-	public AllocationService(AllocationRepository allocationRepository, ProfessorService professorService,
-			CourseService courseService, AllocationMapper allocationMapper) {
+	public AllocationService(AllocationRepository allocationRepository, ProfessorService professorService, CourseService courseService, AllocationMapper allocationMapper) {
 		this.allocationRepository = allocationRepository;
 		this.professorService = professorService;
 		this.courseService = courseService;
@@ -35,20 +34,17 @@ public class AllocationService {
 	}
 
 	public AllocationView findAllocationById(Long id) {
-		return allocationRepository.findById(id).map(allocationMapper::toAllocationView)
-				.orElseThrow(() -> new EntityNotFoundException("allocation not found"));
+		return allocationRepository.findById(id).map(allocationMapper::toAllocationView).orElseThrow(() -> new EntityNotFoundException("allocation not found"));
 	}
 
 	public AllocationView saveAllocation(AllocationDTO dto) {
 		Allocation allocation = allocationMapper.toAllocation(dto);
 		validadeAllocation(allocation);
 
-		Professor professor = professorService.getProfessorById(allocation.getProfessor().getId());
+		Professor professor = professorService.getProfessorByName(allocation.getProfessor().getName());
 		allocation.setProfessor(professor);
-
-		Course course = courseService.getCourseById(allocation.getCourse().getId());
+		Course course = courseService.getCourseByName(allocation.getCourse().getName());
 		allocation.setCourse(course);
-		
 		allocation = allocationRepository.save(allocation);
 		
 		return allocationMapper.toAllocationView(allocation);
@@ -56,25 +52,22 @@ public class AllocationService {
 
 	public AllocationView updateAllocation(Long id, AllocationDTO dto) {
 		validadeAllocation(allocationMapper.toAllocation(dto));
+		
 		Allocation allocation = allocationRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("allocation not found"));
 		allocation.setDayWeek(dto.day());
 		allocation.setEndHour(dto.endHour());
 		allocation.setStartHour(dto.startHour());
-		
-		Professor professor = professorService.getProfessorById(allocation.getProfessor().getId());
+		Professor professor = professorService.getProfessorByName(allocation.getProfessor().getName());
 		allocation.setProfessor(professor);
-
-		Course course = courseService.getCourseById(allocation.getCourse().getId());
+		Course course = courseService.getCourseByName(allocation.getCourse().getName());
 		allocation.setCourse(course);
-		
 		allocation = allocationRepository.save(allocation);
 		
 		return allocationMapper.toAllocationView(allocation);
 	}
 
 	public void deleteAllocationById(Long id) {
-		Allocation allocation = allocationRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("allocation not found"));
+		Allocation allocation = allocationRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("allocation not found"));
 		allocationRepository.delete(allocation);
 	}
 
@@ -83,34 +76,33 @@ public class AllocationService {
 	}
 	
 	private void validadeAllocation(Allocation allocation) {
-		if (!isEndHourGreaterThanStartHour(allocation) || hasCollision(allocation))
+		if (!isEndHourGreaterThanStartHour(allocation) || hasCollision(allocation)) 
 			throw new RuntimeException("allocation invalid");
 	}
 
 	private boolean hasCollision(Allocation allocation) {
 		boolean hasCollision = false;
 		Pageable pageable = PageRequest.ofSize(20);
-
-		Page<Allocation> allocations = allocationRepository.findByProfessorId(allocation.getProfessor().getId(),
-				pageable);
+		Page<Allocation> allocations = allocationRepository.findByProfessorId(allocation.getProfessor().getId(), pageable);
 
 		for (Allocation val : allocations) {
 			hasCollision = hasCollision(val, allocation);
-			if (hasCollision) {
+			if (hasCollision)
 				break;
-			}
 		}
 
 		return hasCollision;
 	}
 
 	private boolean isEndHourGreaterThanStartHour(Allocation allocation) {
-		return allocation != null && allocation.getStartHour() != null && allocation.getEndHour() != null
+		return allocation != null 
+				&& allocation.getStartHour() != null 
+				&& allocation.getEndHour() != null 
 				&& allocation.getEndHour().compareTo(allocation.getStartHour()) > 0;
 	}
 
 	private boolean hasCollision(Allocation currentAllocation, Allocation newAllocation) {
-		return !currentAllocation.getId().equals(newAllocation.getId())
+		return !currentAllocation.getId().equals(newAllocation.getId()) 
 				&& currentAllocation.getDayWeek() == newAllocation.getDayWeek()
 				&& currentAllocation.getStartHour().compareTo(newAllocation.getEndHour()) < 0
 				&& newAllocation.getStartHour().compareTo(currentAllocation.getEndHour()) < 0;

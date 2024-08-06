@@ -1,4 +1,8 @@
 package com.projeto.professorallocationabner.models.dtos;
 
-public record ProfessorView(Long id, String name, String cpf, DepartmentView department) {
-}
+public record ProfessorView(
+		Long id,
+		String name,
+		String cpf,
+		DepartmentView department
+) {}

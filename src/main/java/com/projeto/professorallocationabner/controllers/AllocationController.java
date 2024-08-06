@@ -52,8 +52,7 @@ public class AllocationController {
 
 	@PutMapping("/update-allocation")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<AllocationView> updateAllocation(@RequestParam Long id,
-			@RequestBody @Valid AllocationDTO dto) {
+	public ResponseEntity<AllocationView> updateAllocation(@RequestParam Long id, @RequestBody @Valid AllocationDTO dto) {
 		AllocationView view = allocationService.updateAllocation(id, dto);
 		return ResponseEntity.status(200).body(view);
 	}

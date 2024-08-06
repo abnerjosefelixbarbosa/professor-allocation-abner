@@ -27,13 +27,11 @@ public class DepartmentService {
 	}
 
 	public DepartmentView findDepartmentById(Long id) {
-		return departmentRepository.findById(id).map(departmentMapper::toDepartmentView)
-				.orElseThrow(() -> new EntityNotFoundException("department not found"));
+		return departmentRepository.findById(id).map(departmentMapper::toDepartmentView).orElseThrow(() -> new EntityNotFoundException("department not found"));
 	}
 
 	public DepartmentView findDepartmentByName(String name) {
-		return departmentRepository.findByName(name).map(departmentMapper::toDepartmentView)
-				.orElseThrow(() -> new EntityNotFoundException("department not found"));
+		return departmentRepository.findByName(name).map(departmentMapper::toDepartmentView).orElseThrow(() -> new EntityNotFoundException("department not found"));
 	}
 
 	public Department getDepartmentById(Long id) {
@@ -41,23 +39,26 @@ public class DepartmentService {
 	}
 
 	public Department getDepartmentByName(String name) {
-		return departmentRepository.findByName(name)
-				.orElseThrow(() -> new EntityNotFoundException("department not found"));
+		return departmentRepository.findByName(name).orElseThrow(() -> new EntityNotFoundException("department not found"));
 	}
 
 	public DepartmentView saveDepartment(DepartmentDTO dto) {
 		Department department = departmentMapper.toDepartment(null, dto);
 		validateDepartment(department);
+		
 		department = departmentRepository.save(department);
+		
 		return departmentMapper.toDepartmentView(department);
 	}
 
 	public DepartmentView updateDepartment(Long id, DepartmentDTO dto) {
 		Department department = departmentMapper.toDepartment(id, dto);
 		validateDepartment(department);
-		Department response = departmentRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("department not found"));
+		
+		Department response = departmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("department not found"));
 		response.setName(department.getName());
+		response = departmentRepository.save(response);
+		
 		return departmentMapper.toDepartmentView(response);
 	}
 
@@ -68,8 +69,7 @@ public class DepartmentService {
 	}
 
 	public void deleteDepartmentByName(String name) {
-		Department department = departmentRepository.findByName(name)
-				.orElseThrow(() -> new EntityNotFoundException("department not found"));
+		Department department = departmentRepository.findByName(name).orElseThrow(() -> new EntityNotFoundException("department not found"));
 		departmentRepository.delete(department);
 	}
 
