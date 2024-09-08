@@ -1,21 +1,17 @@
 # professor-allocation-abner
 
-# LICENSE
+# Licença
 [![NPM](https://img.shields.io/npm/l/react)](https://github.com/abnerjosefelixbarbosa/professor-allocation-abner/blob/main/LICENSE)
 
-# About
+# Sobre
 
-Backend do app professor allocation
+Aplicação professor allocation
 
-# Models
+# Modelo
 
 ![professor_allocation_class_diagram drawio](https://github.com/user-attachments/assets/6ec5c01d-2ae5-4dee-9cc5-ab3edc762e22)
 
-# Resources
-
-## Function
-
-# Technologies
+# Recursos do projeto
 
 ## Backend
 - Java 17
@@ -27,7 +23,7 @@ Backend do app professor allocation
 - Swagger
 - Lombok
 
-# Project Execution
+# Execução do projeto
 
 - Clone o repositorio e execute em uma IDE
 - Acesse o [documento da API](http://localhost:8080/swagger-ui/index.html) ou use outra plataforma para testar a API. 
@@ -36,7 +32,7 @@ Backend do app professor allocation
 # clone repository
 git clone https://github.com/abnerjosefelixbarbosa/professor-allocation-abner.git
 ```
-# Author
+# Autor
 
 Abner José Felix Barbosa
 
